@@ -1,0 +1,76 @@
+.navigation {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    height: 50px;
+  }
+  
+  .navigation li {
+    display: inline-block;
+    font-weight: bold;
+    border-radius: 3px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #e5e5e5;
+    margin: 4px;
+    width: 50px;
+  }
+  
+  .navigation ul {
+    text-align: center;
+    height: inherit;
+  }
+  
+  .page-current {
+    color: #ffffff;
+    background: rgba(47, 76, 109, 0.8);
+  }
+  
+  .page-nav {
+    color: #545454;
+    background: #fff;
+  }
+  
+  .page-nav:hover {
+    color: #ffffff;
+    background: rgba(47, 76, 109, 0.6);
+  }
+  
+  .navigation a {
+    color: #545454;
+  }
+  
+  .navigation a,
+  .navigation span {
+    display: block;
+    padding: 12px 12px 14px;
+    min-width: 14px;
+  }
+  
+  @media (max-width: 550px) {
+    .navigation a,
+    .navigation span {
+        padding: 5px;
+    }
+    .navigation li {
+        width: 35px;
+    }
+  
+    .active {
+        border-left: 3px solid rgba(47, 76, 109, 0.8);
+        border-right: 3px solid rgba(47, 76, 109, 0.8);
+        border-bottom: none;
+    }
+    .pages {
+        flex-direction: column;
+        display: none;
+    }
+    .page {
+        width: auto;
+    }
+    .page:hover {
+        border-left: 3px solid rgba(47, 76, 109, 0.6);
+        border-right: 3px solid rgba(47, 76, 109, 0.6);
+        border-bottom: none;
+    }
+  }

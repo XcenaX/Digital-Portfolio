@@ -1,0 +1,5 @@
+{% autoescape off %}
+Привет {{ user.username }},
+Пожалуйста подтверди свою почту на сайте {{domain}}, перейдя по ссылке
+http://{{ domain }}{% url 'main:activate' uidb64=uid token=token %}
+{% endautoescape %}

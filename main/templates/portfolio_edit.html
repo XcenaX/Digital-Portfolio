@@ -1,0 +1,134 @@
+{% extends "base_portfolio.html" %}
+{% load static %}
+
+{%block styles %}
+    <title>Портфолио {{user.fullname}}</title>
+{% endblock %}
+
+{% block header_button5 %}active{% endblock %}
+{% block header_button2 %}active{% endblock %}
+{% block active_portfolio_block1 %}active{% endblock %}
+
+
+{%block notification %}
+    {%if success%}
+        <div class="alert alert-dismissable alert-success mb-0 rounded-0" id="success-update" style="padding:15px">
+            <button aria-hidden="true" class="close" id="close" data-dismiss="alert" type="button"
+                style="top:0;right:0">×</button>
+            {{success}}
+        </div>
+    {% elif upload_error%}
+        <div class="alert alert-dismissable alert-danger mb-0 rounded-0" id="success-update" style="padding:15px">
+            <button aria-hidden="true" class="close" id="close" data-dismiss="alert" type="button"
+                style="top:0;right:0;font-size:25px">×</button>
+            {{upload_error}}
+        </div>
+    {%endif%}
+{%endblock%}
+
+{%block tab_content%}
+    <div class="tab-content">
+        <div class=" active" id="portfolio">
+            
+            <form class="form" action="##" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="col-xl-6 col-sm-12">
+                    <div class="form-group">
+                    
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="text" class="input100" required name="fullname" value="{{user.fullname}}" id="full_name" placeholder=" Ф.И.О" title=" Ф.И.О">
+                                <span class="focus-input100"></span>  
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                        
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="email" disabled name="email" class="input100" value="{{user.email}}" required name="email" id="email" placeholder="Ваш Email" title="Ваш Email">
+                                <span class="focus-input100"></span> 
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="text" name="location" class="input100" required id="location" value="{{user.university.city}}" placeholder="Город проживания" title="Город проживания">
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="text" name="university" class="input100" required id="university" value="{%if user.university.name%} {{user.university.name}} {%endif%}" placeholder="Университет" title="Название университета">
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="tel" name="course" class="input100" required id="course" value="{%if user.university_course%} {{user.university_course}} {%endif%}" placeholder="На каком вы курсе" title="Введите цифру курса" maxlength="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : (!isNaN(Number(event.key)) && event.key != ' ')">
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-xl-6 col-sm-12">
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="date" name="date_of_birth" class="input100" required id="date_of_birth" value="{{user.date_of_birth|date:"Y-m-d"}}" placeholder="Дата рождения" title="Дата рождения">
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">                                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative  p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="text" disabled value="Скан Мед карты" class="input100"/>
+                                <input type="file" class="input100 image-input" name="medcard" id="medcard" >
+                            </div>                                                                                        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <img {%if user.medcard_url%} src="{{user.medcard_url}}" {%endif%} alt="">
+                            </div>                                                                                        
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    
+                    <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative">                 
+                        <div class="card shadow-sm x-shadow-fade-in">
+                            <h1 class="resume-title inherit-style">Резюме</h1>                           
+                            <textarea placeholder="Напишите о себе" name="resume"  id="resume" class="resume" rows="10">{{user.about}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">          
+                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12">                             
+                        <button class="btn btn-lg btn-success col-12 m-b-20" type="submit">Сохранить</button>    
+                    </div>                                                            
+                </div>
+            </form>
+        </div><!--/-->                            
+    </div><!--/tab-content-->
+{%endblock%}
+  
+
+
+
+
+
+                                                      

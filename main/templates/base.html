@@ -1,0 +1,230 @@
+<!--блок head-->
+{% block links %}    
+    {% load static %}
+    <head>        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+        <script src="{%static 'js/ajax/jquery.min.js'%}"></script>
+        <script src="{%static 'js/bootstrap.min.js'%}"></script>
+        
+        <script src="{%static 'js/popper.js'%}"></script>
+        <script src="{%static 'js/main.js'%}"></script>
+        <link rel="stylesheet" href="{%static 'css/sidebar.css'%}">
+        <link rel="stylesheet" href="{%static 'css/style.css'%}">
+        <link rel="icon" href="{%static 'images/logo-cuted.png'%}">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{%static 'css/util.css'%}">
+        <link rel="stylesheet" type="text/css" href="{%static 'css/portfolio.css'%}">
+
+        {% block styles %}
+
+        {% endblock %}
+    </head>
+{% endblock %}
+
+{% block body%}
+    <body>
+        <div class="wrap">
+            <!--header для каждой странички-->
+            {% block header %}
+                
+                <div class="sidebar-parent-block">
+                    <nav class="sidebar">
+                        <div class="sidebar-content">
+                        <div class="sidebar-header">
+                            <div class="arrow-navigation"><img alt="" src="{%static 'images/icons/arrow-right.png'%}" id="arrow"
+                                style="width: 20px;"></div>
+                            <a href="#"><img alt="" class="mystat-img" src="{%static 'images/logo.png'%}" style="width: 100px;"></a>
+                        </div>
+                        <div>
+                            <ul class="sidebar-nav">
+
+                            <li class="main-item ">
+                                <a routerlinkactive="active" href="{%url 'main:index'%}" >
+                                <span class="side-text {%block header_button1%} {% endblock %}">Главная</span>
+                                <div class="close-hover"> Главная </div>
+                                </a>
+                            </li>
+                            {% if request.session.role == "student" %}
+                                <li class="profile-item ">
+                                    <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}" >
+                                    <span class="side-text {%block header_button2%} {% endblock %}">Портфолио</span>
+                                    <div class="close-hover"> Портфолио </div>
+                                    </a>
+                                </li>
+                            {% elif request.session.role == "employer" %}
+                                <li class="profile-item">
+                                    <a routerlinkactive="active" href="{%url 'main:index'%}" >
+                                    <span class="side-text {%block header_button3%} {% endblock %}">Профиль</span>
+                                    <div class="close-hover"> Профиль </div>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            </ul>
+
+                        </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <div class="sidebar-parent-top-block">
+                    <nav class="sidebar" id="mobile-nav">
+                        <div class="sidebar-content">
+                        <div class="sidebar-header">
+                            <div class="arrow-navigation"><img alt="" id="arrow-mobile" style="width: 30px; margin-top: 15px;"
+                                src="{%static 'images/icons/down-arrow.png'%}"></div>
+                            <a href="#"><img alt="" class="mystat-img-mobile" src="{%static 'images/logo.png'%}" style="width: 100px;"></a>
+                        </div>
+
+                        <div id="mobile-sidebar" class="open-sidebar">
+                            
+                            <div id="mobile-sidebar" class="open-sidebar">           
+                            <ul class="sidebar-nav">
+                                <li class="main-item">
+                                    <a routerlinkactive="active" href="{%url 'main:index'%}" >
+                                        <span class="side-text">Главная</span>
+                                    </a>
+                                </li>
+                                {% if request.session.role == "student" %}
+                                    <li class="profile-item">
+                                        <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}">
+                                            <span class="side-text">Портфолио</span> 
+                                        </a>
+                                    </li>
+                                {% elif request.session.role == "employer" %}
+                                    <li class="profile-item">
+                                        <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}">
+                                        <span class="side-text">Профиль</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                            <ul class="sidebar-nav">
+                            <li class="main-item">
+                                <a routerlinkactive="active" href="{%url 'main:index'%}" class="{%block header_button4%} {% endblock %}">
+                                <span class="side-text">Главная</span>
+                                </a>
+                            </li>
+                            {% if request.session.role == "student" %}
+                                <li class="profile-item">
+                                    <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}"  class="{%block header_button5%} {% endblock %}">
+                                    <span class="side-text">Портфолио</span>
+                                    </a>
+                                </li>
+                            {% elif request.session.role == "employer" %}
+                                <li class="profile-item">
+                                    <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}"  class="{%block header_button6%} {% endblock %}">
+                                    <span class="side-text">Профиль</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="exit-item">
+                                <a routerlinkactive="active" href="#" class="">
+                                <span class="side-text">Выйти</span>
+                                </a>
+                            </li>
+                            </ul>
+                        </div>
+                        </div>
+                    </nav>
+                </div>
+                
+            {% endblock %}
+            
+            
+            
+            <!--содержимое для каждой странички-->
+            {% block body_content %}
+                <div class="content">
+                    <nav class="navbar navbar-expand-lg navbar-light {% if success or upload_error %}m-0{% endif %}" id="none">
+                        <div class="container-fluid">
+                            <div class=" navbar-collapse" style="text-align: center;" id="navbarSupportedContent">
+                                <a style="color:white;" href="#">Digital University</a>
+                                <ul class="nav navbar-nav ml-auto">
+                                    <li class="nav-item m-r-30">
+                                        <img src="{{user.img_url}}" class="nav-image inline-block" alt="">
+                                        <a class="nav-link inline-block" href="#">{{user.fullname}}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <form action="{% url 'main:logout'%}" method="post">{% csrf_token %}
+                                            <button type="submit" class="nav-link m-t-10" href="{%url 'main:logout'%}"><img style="width: 20px;" src="{%static 'images/icons/logout-white.png'%}"alt=""></button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {% block notification%}
+                    
+                    {% endblock %}
+
+                    {% block content%}
+
+                    {%endblock%}
+                </div>
+            {% endblock %}
+
+        </div>
+    </body>
+{% endblock %}
+
+{% block footer %}
+
+    <!-- Место для футера -->
+
+    <!-- Место для футера -->
+
+    <script src="{%static 'js/jquery.min.js'%}"></script>
+    <script src="{%static 'js/search.js'%}"></script>
+    <script src="{%static 'js/sidebar.js'%}"></script>
+    <style type="text/css">
+        #hellopreloader>p {
+        display: none;
+        }
+
+        #hellopreloader_preload {
+        display: block;
+        position: fixed;
+        z-index: 99999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 100px;
+        background: #1e6cc7 url({%static 'gif/preloader.gif'%}) center center no-repeat;
+        background-size: 50%;
+        }
+    </style>
+    <div id="hellopreloader">
+        <div id="hellopreloader_preload"></div>
+        <p><a href="http://hello-site.ru">Hello-Site.ru. Бесплатный конструктор сайтов.</a></p>
+    </div>
+    <script type="text/javascript">
+        var hellopreloader = document.getElementById("hellopreloader_preload");
+
+        function fadeOutnojquery(el) {
+        el.style.opacity = 1;
+        var interhellopreloader = setInterval(function () {
+            el.style.opacity = el.style.opacity - 0.05;
+            if (el.style.opacity <= 0.05) {
+            clearInterval(interhellopreloader);
+            hellopreloader.style.display = "none";
+            document.getElementsByTagName("html")[0].style.overflow = "";
+            }
+        }, 16);
+        }
+        window.onload = function () {
+
+
+        setTimeout(function () {
+            fadeOutnojquery(hellopreloader);
+        }, 100);
+        };
+    </script>
+{% endblock %}

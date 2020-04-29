@@ -1,0 +1,144 @@
+{% extends "base_portfolio.html" %}
+{% load static %}
+
+{%block styles %}
+    <title>Портфолио {{student.fullname}}</title>
+{% endblock %}
+
+{% block header_button5 %}active{% endblock %}
+{% block header_button2 %}active{% endblock %}
+{% block active_portfolio_block1 %}active{% endblock %}
+
+
+{%block notification %}
+    {%if success%}
+        <div class="alert alert-dismissable alert-success mb-0 rounded-0" id="success-update" style="padding:15px">
+            <button aria-hidden="true" class="close" id="close" data-dismiss="alert" type="button"
+                style="top:0;right:0">×</button>
+            {{success}}
+        </div>
+    {% elif upload_error%}
+        <div class="alert alert-dismissable alert-danger mb-0 rounded-0" id="success-update" style="padding:15px">
+            <button aria-hidden="true" class="close" id="close" data-dismiss="alert" type="button"
+                style="top:0;right:0;font-size:25px">×</button>
+            {{upload_error}}
+        </div>
+    {%endif%}
+{%endblock%}
+
+{%block portfolio_pages%}
+    <ul class="nav nav-tabs m-b-20 m-t-20">
+        <li id="auto-scroll" class="active"><a href="{% url 'main:portfolio_edit' %}#auto-scroll">Портфолио</a></li>
+        <li id="achive" ><a href="{% url 'main:portfolio_achivements_show' student.id %}#auto-scroll">Достижения</a></li>
+    </ul>
+{%endblock%}
+
+{%block tab_content%}
+    <h3  class="important-text" style="margin:30px auto;text-align:center;">{{student.fullname}}</h3>
+    <div class="tab-content">
+        <div class=" active" id="portfolio">
+            
+            <form class="form" action="#" method="post" >{% csrf_token %}
+                <div class="col-xl-6 col-sm-12">
+                    
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <div type="text" name="location" class="input100 p-t-10"  id="location"  title="Город проживания">
+                                    <span style="float:left">Город:&emsp; </span> <h3  style="float:left">{{student.university.city}}</h3 > {%if not student.university.city%} <h3  style="float:left">не указано</h3>{%endif%}
+                                </div>
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <div type="text" name="university" class="input100 p-t-10"  id="university" value="" placeholder="Университет" title="Название университета">
+                                    <span style="float:left">Университет:&emsp; </span> {%if student.university.name%} <h3  style="float:left">{{student.university.name}}</h3> {%else%} <h3  style="float:left">не указано</h3>{%endif%}
+                                </div>
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <div type="tel" name="course" class="input100 p-t-10" id="course">
+                                    <span style="float:left">Курс: &emsp;</span> {%if student.university_course%} <h3  style="float:left">{{student.university_course}} курс </h3>{%else %} <h3  style="float:left">не указано</h3>{%endif%}
+                                </div>
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-xl-6 col-sm-12">
+                    <div class="form-group">
+                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <div class="input100 p-t-10"  id="date_of_birth">
+                                    <span style="float:left">Дата рождения: </span> {%if student.date_of_birth%} <h3  style="float:left" style="float:left"> {{student.date_of_birth|date:"Y-m-d"}}</h3>  {%else %} <h3  style="float:left">не указано</h3>{%endif%} 
+                                </div>
+                                <span class="focus-input100"></span>
+                            </div>                                            
+                        </div>
+                    </div>
+                    <div class="form-group">                                        
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative  p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <span type="text"  value="" class="input100 p-t-10"> Скан Мед карты</span>
+                                
+                            </div>                                                                                        
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <div class="preview">
+                                    <img alt="" {%if student.medcard_url%} src="{{student.medcard_url}}" {%endif%}  class="achivement-img">
+                                    <div class="myoverlay">
+                                    </div>
+                                    <div class="links" style="text-align: center;">
+                                        <a data-toggle="modal" href="{{student.img_url}}" download class="quickbox" style="width:auto;height:auto;padding:12px">
+                                            <img src="{%static 'images/icons/download.png'%}" style="width:25px;height:25px"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                
+                            </div>                                                                                        
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    
+                    <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative">                 
+                        <div class="card shadow-sm x-shadow-fade-in">
+                            <h1 class="resume-title inherit-style">Резюме</h1>                           
+                            <textarea disabled  id="resume" class="resume" rows="10">{{student.about}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">          
+                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12">                             
+                        <button class="btn btn-lg btn-success col-12 m-b-20" type="submit">Отправить приглашение</button>    
+                    </div>                                                            
+                </div>
+            </form>
+        </div><!--/-->                            
+    </div><!--/tab-content-->
+{%endblock%}
+  
+
+
+
+
+
+                                                      
