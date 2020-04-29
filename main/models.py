@@ -24,7 +24,9 @@ class Employer(models.Model): # работодатель
     img_url = models.TextField(default=settings.STATIC_URL+"images/icons/user.png")
     date_of_register = models.DateField(auto_now=True) 
     is_active = models.BooleanField(default=False)
-    # Алиби здесь наверное еще поля будут, сам добавишь если что)
+    description = models.TextField(default="")
+    vk = models.TextField(default="")
+    telegram = models.TextField(default="")
     def __str__(self):
         return self.username
 

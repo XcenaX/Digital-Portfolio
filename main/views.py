@@ -1,7 +1,5 @@
 from django.shortcuts import render
 
-
-from django.shortcuts import render
 #from .forms import UserForm, CommentForm, BlogForm
 from .models import Student, City, University, Employer, Request, Achivement
 

@@ -58,7 +58,7 @@
                                 </li>
                             {% elif request.session.role == "employer" %}
                                 <li class="profile-item">
-                                    <a routerlinkactive="active" href="{%url 'main:index'%}" >
+                                    <a routerlinkactive="active" href="{%url 'main:employer_profile'%}" >
                                     <span class="side-text {%block header_button3%} {% endblock %}">Профиль</span>
                                     <div class="close-hover"> Профиль </div>
                                     </a>
