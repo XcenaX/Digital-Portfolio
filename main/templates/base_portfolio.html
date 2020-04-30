@@ -185,7 +185,7 @@
                                     <ul class="list-group card shadow-sm x-shadow-fade-in" >
                                         <form action="{%url 'main:update_social'%}" method="POST">{% csrf_token %}
                                             <li class="list-group-item text-muted inherit-style">Соц Сети <img src="{%static 'images/icons/share.png'%}" style="width: 15px;margin-left: 2px;"  alt=""></li>
-                                            {% if request.session.role == "student"%}
+                                            {% if request.session.user_id == user.id and student %}
                                                 <li class="list-group-item text-muted social-li">
                                                     <a href="#">
                                                         <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">
@@ -201,7 +201,7 @@
                                                 <li class="list-group-item text-muted social-li">
                                                     <button class="btn btn-lg btn-success col-12" type="submit">Сохранить</button>
                                                 </li>
-                                            {% elif request.session.role == "employer"%}
+                                            {% else %}
                                                 {%if employer_request.is_applied%}
                                                     <li class="list-group-item text-muted social-li">
                                                         <a href="{{user.vk}}">
@@ -255,12 +255,14 @@
                                 </div><!--/col-3-->
                                 <div class="col-sm-9">
                                     {%block portfolio_pages%}
-                                        <ul class="nav nav-tabs m-b-20 m-t-20">
-                                            <li id="auto-scroll" class="{%block active_portfolio_block1%} {%endblock%}"><a href="{% url 'main:portfolio_edit' %}#auto-scroll">Портфолио</a></li>
-                                            <li id="achive" class="{%block active_portfolio_block2%} {%endblock%}"><a href="{% url 'main:portfolio_achivements' %}#auto-scroll">Достижения</a></li>
-                                            <li id="requests" class="{%block active_portfolio_block3%} {%endblock%}"><a href="{% url 'main:portfolio_requests' %}#auto-scroll">Предложения Работы</a></li>
-                                            <li id="add-achive" class="{%block active_portfolio_block4%} {%endblock%}"><a href="{% url 'main:portfolio_add_achivement' %}#auto-scroll">Добавить Достижение</a></li>
-                                        </ul>
+                                        {% if request.session.role == "student" %}
+                                            <ul class="nav nav-tabs m-b-20 m-t-20">
+                                                <li id="auto-scroll" class="{%block active_portfolio_block1%} {%endblock%}"><a href="{% url 'main:portfolio_edit' %}#auto-scroll">Портфолио</a></li>
+                                                <li id="achive" class="{%block active_portfolio_block2%} {%endblock%}"><a href="{% url 'main:portfolio_achivements' %}#auto-scroll">Достижения</a></li>
+                                                <li id="requests" class="{%block active_portfolio_block3%} {%endblock%}"><a href="{% url 'main:portfolio_requests' %}#auto-scroll">Предложения Работы</a></li>
+                                                <li id="add-achive" class="{%block active_portfolio_block4%} {%endblock%}"><a href="{% url 'main:portfolio_add_achivement' %}#auto-scroll">Добавить Достижение</a></li>
+                                            </ul>
+                                        {%endif %}
                                     {%endblock%}
                                     
                                 {% block tab_content%}

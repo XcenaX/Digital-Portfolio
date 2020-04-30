@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 
-from . import views
+from . import views, realibi_views
 
 app_name= "main"
 urlpatterns = [
@@ -21,6 +21,7 @@ urlpatterns = [
     path('update_social', views.update_social, name="update_social"),
     path('switch_search', views.switch_search, name="switch_search"),
     path('download/(?P<path>.*)$', views.download, name="download"),
+    path('employer_profile', realibi_views.employer_profile, name="employer_profile"),
     
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='activate'),    
 ]
