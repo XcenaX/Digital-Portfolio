@@ -21,15 +21,14 @@
             <div class="input-select">
               <select data-trigger="" name="category" id="select">
                 <option placeholder="">Фильтр</option>
-                <option value="new">Сначала новые</option>
-                <option value="old">Сначала старые</option>
-                <option value="most_views">Больше всего просмотров</option>
-                <option value="few_views">Меньше всего просмотров</option>
+                {% for key, value in category_values.items %}
+                  <option {%if key == category%} selected {%endif%}value="{{key}}">{{value}}</option>
+                {% endfor%}
               </select>
             </div>
           </div>
           <div class="input-field second-wrap">
-            <input id="search" type="text" name="q" placeholder="Что ищем?" />
+            <input id="search" type="text" name="q" placeholder="Что ищем?" value="{{q}}" />
           </div>
           <div class="input-field third-wrap">
             <button class="btn-search" id="search-button" type="submit">

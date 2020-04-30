@@ -108,6 +108,40 @@ def session_parameter(request, name):
     except:
         return None
 
+def filter_users(request):
+    role = session_parameter(request, "role")
+    q = get_parameter(request, "q")
+    category = get_parameter(request, "category")
+    
+    if role == "student":
+        if category == "old":
+            blocks = Employer.objects.order_by("-date_of_register")
+        elif category == "new":
+            blocks = Employer.objects.order_by("date_of_register")
+        elif category == "most_views":
+            blocks = Employer.objects.order_by("-views")
+        elif category == "few_views":
+            blocks = Employer.objects.order_by("views")
+        else:
+            blocks = Employer.objects.all()
+        if q:
+            blocks = blocks.filter(Q(fullname__icontains=q))# | Q(question__contains=search_text) | Q(subject__contains=search_text))
+    #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
+    else:
+        if category == "old":
+            blocks = Student.objects.filter(is_searching_work=True).order_by("-date_of_register")
+        elif category == "new":
+            blocks = Student.objects.filter(is_searching_work=True).order_by("date_of_register")
+        elif category == "most_views":
+            blocks = Student.objects.filter(is_searching_work=True).order_by("-views")
+        elif category == "few_views":
+            blocks = Student.objects.filter(is_searching_work=True).order_by("views")
+        else:
+            blocks = Student.objects.filter(is_searching_work=True)
+        if q:
+            blocks = blocks.filter(Q(fullname__icontains=q) | Q(university__name__icontains=q) | Q(date_of_birth__icontains=q))
+    return blocks
+
 def logout(request):
     if request.method == "POST":
         try:
@@ -256,41 +290,11 @@ def activate(request, uidb64, token):
                 
 
 def index(request):
-    user = get_current_user(request)
-    blocks = None
-    role = session_parameter(request, "role")
     q = get_parameter(request, "q")
     category = get_parameter(request, "category")
-    
-    if role == "student":
-        if category == "old":
-            blocks = Employer.objects.order_by("-date_of_register")
-        elif category == "new":
-            blocks = Employer.objects.order_by("date_of_register")
-        elif category == "most_views":
-            blocks = Employer.objects.order_by("-views")
-        elif category == "few_views":
-            blocks = Employer.objects.order_by("views")
-        else:
-            blocks = Employer.objects.all()
-        if q:
-            blocks = blocks.filter(Q(fullname__icontains=q))# | Q(question__contains=search_text) | Q(subject__contains=search_text))
-    #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
-    else:
-        if category == "old":
-            blocks = Student.objects.filter(is_searching_work=True).order_by("-date_of_register")
-        elif category == "new":
-            blocks = Student.objects.filter(is_searching_work=True).order_by("date_of_register")
-        elif category == "most_views":
-            blocks = Student.objects.filter(is_searching_work=True).order_by("-views")
-        elif category == "few_views":
-            blocks = Student.objects.filter(is_searching_work=True).order_by("views")
-        else:
-            blocks = Student.objects.filter(is_searching_work=True)
-        if q:
-            blocks = blocks.filter(Q(fullname__icontains=q) | Q(university_name__icontains=q) | Q(date_of_birth__icontains=q))
+    user = get_current_user(request)
+    blocks = filter_users(request)
 
-    
     paginator = Paginator(blocks, COUNT_BLOG_ON_PAGE)
     paginated_blocks, pages = get_paginated_blogs(request, paginator)
     
@@ -299,7 +303,10 @@ def index(request):
     return render(request, 'index.html', {
         "user": user,
         "blocks": paginated_blocks,
-        "pages": pages
+        "pages": pages,
+        "q": q,
+        "category": category,
+        "category_values": {"old": "Сначала старые", "new": "Сначала новые", "most_views": "Больше всего просмотров", "fiew_views":"Меньше всего просмотров"}
     })
 
 def not_found(request):
