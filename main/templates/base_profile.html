@@ -168,24 +168,21 @@
                         <div class="container bootstrap snippet {% if success or upload_error %}m-t-30{% endif %}">
                             <div class="row">
                                 <div class="col-sm-3"><!--left col-->
-                                    {% if request.session.role == "employer"%}
-                                        <div class="text-center relative">
-                                            <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail" style="width: 100%;border-radius: 50%;" alt="avatar">
+                                   
+                                    
+                                    <form action="{%url 'main:update_avatar'%}" style="text-align:center" enctype="multipart/form-data" method="post">{% csrf_token %}
+                                        <div class="relative">
+                                            <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
+                                            <input type="file" name="avatar" class="absolute-link" style="opacity:0;cursor:pointer;" />    
                                         </div>
-                                    {% elif request.session.role == "student"%}
-                                        <form action="{%url 'main:update_avatar'%}" style="text-align:center" enctype="multipart/form-data" method="post">{% csrf_token %}
-                                            <div class="relative">
-                                                <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
-                                                <input type="file" name="avatar" class="absolute-link" style="opacity:0;cursor:pointer;" />    
-                                            </div>
-                                            <button class="btn btn-lg btn-success col-6" type="submit">Загрузить</button>
-                                        </form>
-                                    {% endif %}
+                                        <button class="btn btn-lg btn-success col-6" type="submit">Загрузить</button>
+                                    </form>
+                                    
                                     </hr><br>
                                     <ul class="list-group card shadow-sm x-shadow-fade-in" >
                                         <form action="{%url 'main:update_social'%}" method="POST">{% csrf_token %}
                                             <li class="list-group-item text-muted inherit-style">Соц Сети <img src="{%static 'images/icons/share.png'%}" style="width: 15px;margin-left: 2px;"  alt=""></li>
-                                            {% if request.session.role == "student" %}
+                                            
                                                 <li class="list-group-item text-muted social-li">
                                                     <a href="#">
                                                         <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">
@@ -201,68 +198,31 @@
                                                 <li class="list-group-item text-muted social-li">
                                                     <button class="btn btn-lg btn-success col-12" type="submit">Сохранить</button>
                                                 </li>
-                                            {% else %}
-                                                {%if employer_request.is_applied%}
-                                                    <li class="list-group-item text-muted social-li">
-                                                        <a href="{{user.vk}}">
-                                                            <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">
-                                                        </a>
-                                                        <a href="https://t.me/{{user.telegram}}">
-                                                            <img src="{%static 'images/icons/telegram.png'%}" class="social" alt="">
-                                                        </a>
-                                                    </li>                                                    
-                                                {% elif is_request_sended %}
-                                                    <li class="list-group-item text-muted social-li style="height: auto;text-align: center;"">
-                                                        <h4>Чтобы связатся со студентом нужно чтобы он принял вашу заявку!
-                                                        </h4>
-                                                    </li> 
-                                                {%else %}
-                                                    <li class="list-group-item text-muted social-li" style="height: auto;text-align: center;">
-                                                        <h4>Отправьте заявку чтобы увидеть соц сети студента для связи!
-                                                        </h4>
-                                                    </li> 
-                                                {%endif%}
-                                            {%endif%}
+                                            
                                         </form>                            
                                     </ul>
                                 
                                 
                                     <ul class="list-group m-t-30 card shadow-sm x-shadow-fade-in">
                                         <li class="list-group-item text-muted inherit-style">Статистика<i class="fa fa-dashboard fa-1x m-l-5"></i></li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Просмотры Портфолио</strong></span> {% if request.session.role == "student"%} {{user.views.all|length}}    {%else%}{{student.views.all|length}} {%endif%}</li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Предложения Работы</strong></span>  {% if request.session.role == "student"%} {{user.requests.all|length}} {%else%}{{student.requests.all|length}} {%endif%}</li>
+                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Просмотры вакансий</strong></span> хз</li>
+                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Заявки</strong></span>  хз</li>
                                     </ul> 
 
-                                    {% if request.session.role == "student" %}
-                                        <div class="card" style="margin:50px 0">                                            
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item fs-17">
-                                                    Ищите работу?
-                                                    <label class="switch ">
-                                                        <form action="{%url 'main:switch_search'%}" method="post">{% csrf_token %}
-                                                            <input type="checkbox" class="primary" name="is_search" {% if user.is_searching_work %} checked {%endif%} id="checkbox">
-                                                            <span class="slider round"></span>
-                                                            <button type="hidden" id="is_search"></button>
-                                                        </form>
-                                                    </label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    {%endif %}
+                                    
                                     
                                 
                                 
                                 </div><!--/col-3-->
                                 <div class="col-sm-9">
                                     {%block portfolio_pages%}
-                                        {% if request.session.role == "student" %}
+                                        
                                             <ul class="nav nav-tabs m-b-20 m-t-20">
-                                                <li id="auto-scroll" class="{%block active_portfolio_block1%} {%endblock%}"><a href="{% url 'main:portfolio_edit' %}#auto-scroll">Портфолио</a></li>
-                                                <li id="achive" class="{%block active_portfolio_block2%} {%endblock%}"><a href="{% url 'main:portfolio_achivements' %}#auto-scroll">Достижения</a></li>
-                                                <li id="requests" class="{%block active_portfolio_block3%} {%endblock%}"><a href="{% url 'main:portfolio_requests' %}#auto-scroll">Предложения Работы</a></li>
-                                                <li id="add-achive" class="{%block active_portfolio_block4%} {%endblock%}"><a href="{% url 'main:portfolio_add_achivement' %}#auto-scroll">Добавить Достижение</a></li>
+                                                <li id="auto-scroll" class="{%block active_portfolio_block1%} {%endblock%}"><a href="{% url 'main:portfolio_edit' %}#auto-scroll">Профиль</a></li>
+                                                <li id="achive" class="{%block active_portfolio_block2%} {%endblock%}"><a href="{% url 'main:portfolio_achivements' %}#auto-scroll">Мои Вакансии</a></li>
+                                                <li id="add-achive" class="{%block active_portfolio_block4%} {%endblock%}"><a href="{% url 'main:portfolio_add_achivement' %}#auto-scroll">Добавить Вакансию</a></li>
                                             </ul>
-                                        {%endif %}
+                                        
                                     {%endblock%}
                                     
                                 {% block tab_content%}

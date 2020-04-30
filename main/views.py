@@ -29,6 +29,8 @@ import os
 from django.conf import settings
 from django.http import HttpResponse, Http404
 
+from django.db.models import Q
+
 COUNT_BLOG_ON_PAGE=10
 
 
@@ -248,7 +250,7 @@ def activate(request, uidb64, token):
         return redirect(reverse('main:index'))
         
     else:
-        return render_to_string('after_register.html', {
+        return render(request, 'after_register.html', {
                 "text": "Неверная ссылка активации почты!"
             })
                 
@@ -257,7 +259,7 @@ def index(request):
     user = get_current_user(request)
     blocks = None
     role = session_parameter(request, "role")
-
+    q = get_parameter(request, "q")
     category = get_parameter(request, "category")
     
     if role == "student":
@@ -271,6 +273,9 @@ def index(request):
             blocks = Employer.objects.order_by("views")
         else:
             blocks = Employer.objects.all()
+        if q:
+            blocks = blocks.filter(Q(fullname__icontains=q))# | Q(question__contains=search_text) | Q(subject__contains=search_text))
+    #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
     else:
         if category == "old":
             blocks = Student.objects.filter(is_searching_work=True).order_by("-date_of_register")
@@ -282,6 +287,8 @@ def index(request):
             blocks = Student.objects.filter(is_searching_work=True).order_by("views")
         else:
             blocks = Student.objects.filter(is_searching_work=True)
+        if q:
+            blocks = blocks.filter(Q(fullname__icontains=q) | Q(university_name__icontains=q) | Q(date_of_birth__icontains=q))
 
     
     paginator = Paginator(blocks, COUNT_BLOG_ON_PAGE)
