@@ -226,5 +226,12 @@
             fadeOutnojquery(hellopreloader);
         }, 100);
         };
+
+        $("#sendRequestBtn").click(function(){
+            alert("ok");
+            $.ajax({url: "{% url 'main:send_request' %}", success: function(){
+                $("#sendRequestBtn").prop('value', 'Отправлено!');
+            }});
+        });
     </script>
 {% endblock %}

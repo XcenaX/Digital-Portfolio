@@ -185,7 +185,7 @@
                                     <ul class="list-group card shadow-sm x-shadow-fade-in" >
                                         <form action="{%url 'main:update_social'%}" method="POST">{% csrf_token %}
                                             <li class="list-group-item text-muted inherit-style">Соц Сети <img src="{%static 'images/icons/share.png'%}" style="width: 15px;margin-left: 2px;"  alt=""></li>
-                                            {% if request.session.role == "student" %}
+                                            {% if request.session.role == "student" %} 
                                                 <li class="list-group-item text-muted social-li">
                                                     <a href="#">
                                                         <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">

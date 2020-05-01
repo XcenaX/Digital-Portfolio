@@ -30,14 +30,6 @@ class Employer(models.Model): # работодатель
     def __str__(self):
         return self.username
 
-class Request(models.Model):
-    content = models.TextField()
-    pub_date = models.DateTimeField(default=timezone.now)
-    owner = models.ForeignKey(Employer, on_delete=models.CASCADE, default=None)
-    is_applied = models.BooleanField(default=False)
-    def __str__(self):
-        return self.content
-
 class View(models.Model):
     owner = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
@@ -56,7 +48,6 @@ class Student(models.Model):
     date_of_register = models.DateField(auto_now=True) 
     is_active = models.BooleanField(default=False)
     achivements = models.ManyToManyField(Achivement, null=True, blank=True)
-    requests = models.ManyToManyField(Request, null=True, blank=True)
     views = models.ManyToManyField(View, blank=True)
     vk = models.TextField(default="")
     telegram = models.TextField(default="")
@@ -64,5 +55,10 @@ class Student(models.Model):
     def __str__(self):
         return self.username
 
-
-
+class Request(models.Model):
+    pub_date = models.DateTimeField(default=timezone.now)
+    owner = models.ForeignKey(Employer, on_delete=models.CASCADE, default=None)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
+    is_applied = models.BooleanField(default=False)
+    def __str__(self):
+        return self.content

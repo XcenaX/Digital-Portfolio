@@ -250,7 +250,7 @@ def register(request):
             send_email(message, mail_subject, to_email)
             request.session["user_id"] = current_user.id
             request.session["role"] = role
-            return render(request, 'after_register.html', {
+            return render(request, 'message.html', {
                 "text": "Вам на почту выслано письмо для подтверждения!"
             })
         except Exception as error:

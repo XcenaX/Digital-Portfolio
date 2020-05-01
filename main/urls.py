@@ -22,6 +22,7 @@ urlpatterns = [
     path('switch_search', views.switch_search, name="switch_search"),
     path('download/(?P<path>.*)$', views.download, name="download"),
     path('employer_profile', realibi_views.employer_profile, name="employer_profile"),
+    path('send_request', realibi_views.send_request, name="send_request"),
     
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='activate'),    
 ]
