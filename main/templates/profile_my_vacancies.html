@@ -1,0 +1,33 @@
+{% extends "base_profile.html" %}
+{% load static %}
+
+{%block styles %}
+    <title>Вакансии {{user.fullname}}</title>
+{% endblock %}
+
+{% block header_button5 %}active{% endblock %}
+{% block header_button2 %}active{% endblock %}
+{% block active_portfolio_block2 %}active{% endblock %}
+
+{%block tab_content%}
+    <div class="tab-content">
+        <div class="">
+            {% for vacancy in vacancies %}
+                    <div class="form-group">
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-6 col-sm-12">
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <div class="achivement-div">
+                                    <h3 class="achive-title">{{vacancy.title}}</h3>
+                                    <span class="achive-description">{{vacancy.salary}}<br>{{vacancy.content}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+            {% endfor %}
+            {%if not vacancies%}
+                <h2 class="important-text" style="margin:30px auto;text-align:center;">У вас нет вакансии!</h2>
+            {%endif%}
+        </div>
+    </div>
+    <!--/tab-content-->
+{%endblock%}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 #from .forms import UserForm, CommentForm, BlogForm
-from .models import Student, City, University, Employer, Request, Achivement
+from .models import Student, City, University, Employer, Request, Achivement, Vacancy
 
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -115,15 +115,15 @@ def filter_users(request):
     
     if role == "student":
         if category == "old":
-            blocks = Employer.objects.order_by("-date_of_register")
+            blocks = Vacancy.objects.order_by("-pub_date")
         elif category == "new":
-            blocks = Employer.objects.order_by("date_of_register")
+            blocks = Vacancy.objects.order_by("pub_date")
         elif category == "most_views":
-            blocks = Employer.objects.order_by("-views")
+            blocks = Vacancy.objects.order_by("-views")
         elif category == "few_views":
-            blocks = Employer.objects.order_by("views")
+            blocks = Vacancy.objects.order_by("views")
         else:
-            blocks = Employer.objects.all()
+            blocks = Vacancy.objects.all()
         if q:
             blocks = blocks.filter(Q(fullname__icontains=q))# | Q(question__contains=search_text) | Q(subject__contains=search_text))
     #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
@@ -254,7 +254,7 @@ def register(request):
                 "text": "Вам на почту выслано письмо для подтверждения!"
             })
         except Exception as error:
-            return render(request, 'after_register.html', {
+            return render(request, 'message.html', {
                 "text" : error,
             })
             
@@ -284,7 +284,7 @@ def activate(request, uidb64, token):
         return redirect(reverse('main:index'))
         
     else:
-        return render(request, 'after_register.html', {
+        return render(request, 'message.html', {
                 "text": "Неверная ссылка активации почты!"
             })
                 
@@ -297,16 +297,25 @@ def index(request):
 
     paginator = Paginator(blocks, COUNT_BLOG_ON_PAGE)
     paginated_blocks, pages = get_paginated_blogs(request, paginator)
-    
+    vacancies = Vacancy.objects.all()
+    print('[INFO] Vacancies setted')
+
     if not user:
         return redirect(reverse('main:login'))
+        
     return render(request, 'index.html', {
         "user": user,
         "blocks": paginated_blocks,
         "pages": pages,
         "q": q,
         "category": category,
-        "category_values": {"old": "Сначала старые", "new": "Сначала новые", "most_views": "Больше всего просмотров", "fiew_views":"Меньше всего просмотров"}
+        "category_values": {
+            "old": "Сначала старые", 
+            "new": "Сначала новые", 
+            "most_views": "Больше всего просмотров", 
+            "fiew_views":"Меньше всего просмотров"
+        },
+        "vacancies": vacancies
     })
 
 def not_found(request):
@@ -384,6 +393,7 @@ def portfolio_show(request, id):
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
     }) 
+
 
 def achivements_show(request, id):
     employer = get_current_user(request)

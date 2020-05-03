@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, Employer, City, University, Request,Achivement, View
+from .models import Student, Employer, City, University, Request,Achivement, View, Vacancy, Applied_Vacancy
 
 admin.site.register(Student)
 admin.site.register(Employer)
@@ -8,3 +8,5 @@ admin.site.register(University)
 admin.site.register(Request)
 admin.site.register(Achivement)
 admin.site.register(View)
+admin.site.register(Vacancy)
+admin.site.register(Applied_Vacancy)

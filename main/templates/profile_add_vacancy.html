@@ -1,0 +1,72 @@
+{% extends "base_profile.html" %}
+{% load static %}
+
+{%block styles %}
+    <title>Достижения {{user.fullname}}</title>
+    <script src="{%static 'js/image_preview.js'%}" ></script>
+{% endblock %}
+
+{% block header_button5 %}active{% endblock %}
+{% block header_button2 %}active{% endblock %}
+{% block active_portfolio_block4 %}active{% endblock %}
+
+{%block notification %}
+    {%if success%}
+        <div class="alert alert-dismissable alert-success mb-0 rounded-0" id="success-update" style="padding:15px">
+            <button aria-hidden="true" class="close" id="close" data-dismiss="alert" type="button"
+                style="top:0;right:0">×</button>
+            {{success}}
+        </div>
+    {% elif upload_error%}
+        <div class="alert alert-dismissable alert-danger mb-0 rounded-0" id="success-update" style="padding:15px">
+            <button aria-hidden="true" class="close" id="close" data-dismiss="alert" type="button"
+                style="top:0;right:0;font-size:25px">×</button>
+            {{upload_error}}
+        </div>
+    {%endif%}
+{%endblock%}
+
+{%block tab_content%}
+   <div class="tab-content">
+        <div class=" active" id="add-achive">
+            
+            <form class="form" action="{%url 'main:profile_add_vacancy'%}" method="post" >{% csrf_token %}
+                <h1 class="title">Добавить вакансию</h1>
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="text" class="input100" required name="title" id="description" placeholder="Заголовок">
+                                <span class="focus-input100"></span>  
+                            </div>                                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="text" class="input100" required name="content" id="description" placeholder="Описание вакансии">
+                                <span class="focus-input100"></span>  
+                            </div>                                            
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                            
+                            <div class="card shadow-sm x-shadow-fade-in">
+                                <input type="number" class="input100" required name="salary" id="description" placeholder="Предлагаемая зарплата">
+                                <span class="focus-input100"></span>  
+                            </div>                                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">          
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">                             
+                            <button class="btn btn-lg btn-success col-12 m-b-20" type="submit">Добавить</button>    
+                        </div>                                                            
+                    </div>
+                </div>    
+            </form>
+        </div>
+    </div><!--/tab-content-->
+{% endblock%}

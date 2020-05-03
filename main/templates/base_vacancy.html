@@ -167,62 +167,9 @@
                     {% block content%}
                         <div class="container bootstrap snippet {% if success or upload_error %}m-t-30{% endif %}">
                             <div class="row">
-                                <div class="col-sm-3"><!--left col-->
-                                   
-                                    
-                                    <form action="{%url 'main:update_avatar'%}" style="text-align:center" enctype="multipart/form-data" method="post">{% csrf_token %}
-                                        <div class="relative">
-                                            <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
-                                            <input type="file" name="avatar" class="absolute-link" style="opacity:0;cursor:pointer;" />    
-                                        </div>
-                                        <button class="btn btn-lg btn-success col-6" type="submit">Загрузить</button>
-                                    </form>
-                                    
-                                    </hr><br>
-                                    <ul class="list-group card shadow-sm x-shadow-fade-in" >
-                                        <form action="{%url 'main:update_social'%}" method="POST">{% csrf_token %}
-                                            <li class="list-group-item text-muted inherit-style">Соц Сети <img src="{%static 'images/icons/share.png'%}" style="width: 15px;margin-left: 2px;"  alt=""></li>
-                                            
-                                                <li class="list-group-item text-muted social-li">
-                                                    <a href="#">
-                                                        <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">
-                                                    </a>
-                                                    <input type="text" name="vk" class="social-input" value="{{user.vk}}" placeholder="Ссылка на VK">
-                                                </li>
-                                                <li class="list-group-item text-muted social-li">
-                                                    <a href="#">
-                                                        <img src="{%static 'images/icons/telegram.png'%}" class="social" alt="">
-                                                    </a>
-                                                    <input type="text" name="telegram" class="social-input" value="{{user.telegram}}" placeholder="Твой ник в телеграмм">
-                                                </li>
-                                                <li class="list-group-item text-muted social-li">
-                                                    <button class="btn btn-lg btn-success col-12" type="submit">Сохранить</button>
-                                                </li>
-                                            
-                                        </form>                            
-                                    </ul>
-                                
-                                
-                                    <ul class="list-group m-t-30 card shadow-sm x-shadow-fade-in">
-                                        <li class="list-group-item text-muted inherit-style">Статистика<i class="fa fa-dashboard fa-1x m-l-5"></i></li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Просмотры вакансий</strong></span> хз</li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Заявки</strong></span>  хз</li>
-                                    </ul> 
-
-                                    
-                                    
-                                
-                                
-                                </div><!--/col-3-->
-                                <div class="col-sm-9">
-                                    {%block portfolio_pages%}
-                                            <ul class="nav nav-tabs m-b-20 m-t-20">
-                                                <li id="auto-scroll" class="{%block active_portfolio_block1%} {%endblock%}"><a href="{% url 'main:employer_profile' %}#auto-scroll">Профиль</a></li>
-                                                <li id="achive" class="{%block active_portfolio_block2%} {%endblock%}"><a href="{% url 'main:profile_my_vacancies' %}#auto-scroll">Мои Вакансии</a></li>
-                                                <li id="add-achive" class="{%block active_portfolio_block4%} {%endblock%}"><a href="{% url 'main:profile_add_vacancy' %}#auto-scroll">Добавить Вакансию</a></li>
-                                            </ul>
-                                    {%endblock%}  
+                                <div class="col-12">
                                 {% block tab_content%}
+
                                 {%endblock%}
                             </div><!--/col-9-->
                         </div><!--/row-->

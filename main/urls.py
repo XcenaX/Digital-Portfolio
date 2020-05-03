@@ -12,6 +12,7 @@ urlpatterns = [
     path('register', views.register, name='register'),  
     path('portfolio_edit', views.portfolio_edit, name="portfolio_edit"),
     path('portfolio/<int:id>', views.portfolio_show, name="portfolio_show"),
+    path('vacancy/<int:id>', realibi_views.vacancy_show, name="vacancy_show"),
     path('portfolio/<int:id>/achivements', views.achivements_show, name="portfolio_achivements_show"),
     path('portfolio_achivements', views.portfolio_achivements, name="portfolio_achivements"),
     path('portfolio_add_achivement', views.portfolio_add_achivement, name="portfolio_add_achivement"),
@@ -23,6 +24,9 @@ urlpatterns = [
     path('download/(?P<path>.*)$', views.download, name="download"),
     path('employer_profile', realibi_views.employer_profile, name="employer_profile"),
     path('send_request', realibi_views.send_request, name="send_request"),
+    path('profile_add_vacancy', realibi_views.profile_add_vacancy, name="profile_add_vacancy"),
+    path('profile_my_vacancies', realibi_views.profile_my_vacancies, name="profile_my_vacancies"),
+    path('apply_vacancy', realibi_views.apply_vacancy, name="apply_vacancy"),
     
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='activate'),    
 ]
