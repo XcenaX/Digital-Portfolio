@@ -452,6 +452,18 @@ h1.title {
     border: 0 solid rgba(0,0,0,0.125);
 }
 
+.mgt-50{
+  margin-top: 50px;
+}
+
+.mgt-20{
+  margin-top: 20px;
+}
+
+.mgt-10{
+  margin-top: 10px;
+}
+
 
 /*------------------------------------------------------------------
 [ Input ]*/
@@ -476,7 +488,8 @@ h1.title {
   width: 100%;
   background-color: #e6e6e6;
   height: 45px;
-  padding-left: 10px
+  padding: 10px;
+  height: auto;
 }
 /*------------------------------------------------------------------
 [ Focus Input ]*/

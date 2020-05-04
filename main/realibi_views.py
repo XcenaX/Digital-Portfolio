@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Employer, Request, Student, Vacancy, Applied_Vacancy
-from .views import get_current_user
+from .views import get_current_user, get_current_site, render_to_string, send_email
 from django.http import HttpResponse
 
 def get_student_by_id(id):
@@ -32,10 +32,32 @@ def employer_profile(request):
 
 def send_request(request):
     student_id = request.POST['student_id']
+    vacancy_id = request.POST['vacancy_id']
+
+    vacancy = get_vacancy_by_id(vacancy_id)
     student = get_student_by_id(student_id)
 
     user = get_current_user(request)
-    new_request = Request.objects.create(owner=user, student=student)
+
+    try:
+        current_site = get_current_site(request)
+        mail_subject = 'Приглашение на работу!'
+        message = render_to_string('request_send_email.html', {
+            'student': student,
+            'vacancy': vacancy,
+            "mail_subject": mail_subject,
+        })
+        to_email = student.email
+        
+        send_email(message, mail_subject, to_email)
+
+    except Exception as error:
+            return render(request, 'message.html', {
+                "text" : error,
+            })
+    
+
+    new_request = Request.objects.create(owner=user, student=student, vacancy=vacancy)
     new_request.save()
 
     return render(request, 'message.html', { "text": "Приглашение отправлено успешно!" })
@@ -60,6 +82,21 @@ def profile_add_vacancy(request):
     return render(request, 'profile_add_vacancy.html')
 
 
+def profile_delete_vacancy(request):
+    if request.method == "POST":
+        vacancy_id = request.POST['vacancyId']
+        print('[INFO]----------------Vacancy id: ' + vacancy_id + '----------------')
+        print("privet")
+        vacancy = get_vacancy_by_id(vacancy_id)
+
+        vacancy.delete()
+
+    current_user = get_current_user(request)
+
+    vacancies = get_vacancies_by_employer_id(current_user.id)
+    return render(request, 'profile_my_vacancies.html', {"vacancies": vacancies})
+
+
 def profile_my_vacancies(request):
     current_user = get_current_user(request)
     print("[INFO] --------------------- Current user id: " + str(current_user.id) + " -----------------")
@@ -69,9 +106,13 @@ def profile_my_vacancies(request):
 
 def vacancy_show(request, id):
     vacancy = Vacancy.objects.filter(id=id).first()
+    current_user = get_current_user(request)
+
+    applied_vacancies = Applied_Vacancy.objects.filter(vacancy=vacancy)
 
     return render(request, 'vacancy_show.html', {
-        'vacancy': vacancy
+        'vacancy': vacancy,
+        'applied_vacancies': applied_vacancies
     }) 
 
 
