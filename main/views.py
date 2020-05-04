@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 #from .forms import UserForm, CommentForm, BlogForm
-from .models import Student, City, University, Employer, Request, Achivement, Vacancy
+from .models import Student, City, University, Employer, Request, Achivement, Vacancy, View
 
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -17,6 +17,7 @@ import smtplib, ssl
 from .modules.sendEmail import send_email
 
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -300,7 +301,7 @@ def index(request):
     vacancies = Vacancy.objects.all()
     print('[INFO] Vacancies setted')
 
-    if not user:
+    if not user or not user.is_active:
         return redirect(reverse('main:login'))
         
     return render(request, 'index.html', {
@@ -382,6 +383,11 @@ def portfolio_show(request, id):
                 "text" : "Только работодатели могут просматривать портфолио студентов!",
             })
     user = Student.objects.filter(id=id).first()
+
+    if len(user.views.filter(owner=employer)) == 0:
+        view = View.objects.create(owner=employer)
+        user.views.add(view)
+
     employer_request = Request.objects.filter(owner=employer).first()
     is_request_sended = False
     if employer_request:

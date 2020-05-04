@@ -101,17 +101,18 @@
                     
                         <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative p-0">                                            
                             <div class="card shadow-sm x-shadow-fade-in">
-                                <div class="preview">
-                                    <img alt="" {%if student.medcard_url%} src="{{student.medcard_url}}" {%endif%}  class="achivement-img">
-                                    <div class="myoverlay">
+                                {% if student.medcard_url%}
+                                    <div class="preview">
+                                        <img alt="" src="{{student.medcard_url}}" class="achivement-img">
+                                        <div class="myoverlay">
+                                        </div>
+                                        <div class="links" style="text-align: center;">
+                                            <a data-toggle="modal" href="{{student.medcard_url}}" download class="quickbox" style="width:auto;height:auto;padding:12px">
+                                                <img src="{%static 'images/icons/download.png'%}" style="width:25px;height:25px"/>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="links" style="text-align: center;">
-                                        <a data-toggle="modal" href="{{student.img_url}}" download class="quickbox" style="width:auto;height:auto;padding:12px">
-                                            <img src="{%static 'images/icons/download.png'%}" style="width:25px;height:25px"/>
-                                        </a>
-                                    </div>
-                                </div>
-                                
+                                {%endif%}
                                 
                             </div>                                                                                        
                         </div>
