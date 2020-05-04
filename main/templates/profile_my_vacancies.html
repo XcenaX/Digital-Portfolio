@@ -18,7 +18,21 @@
                             <div class="card shadow-sm x-shadow-fade-in">
                                 <div class="achivement-div">
                                     <h3 class="achive-title">{{vacancy.title}}</h3>
-                                    <span class="achive-description">{{vacancy.salary}}<br>{{vacancy.content}}</span>
+                                    <span class="achive-description">Зарплата: {{vacancy.salary}}
+                                        <br>
+                                        Описание: {{vacancy.content}}</span>
+                                    {% if vacancy.owner.id is user.id %}
+                                    <div class="row">
+                                        <div class="col-4"></div>
+                                        <div class="col-4">
+                                            <form action="{%url 'main:delete_vacancy'%}" method="POST">{% csrf_token %}
+                                                <input hidden type="text" value="{{vacancy.id}}" name="vacancyId">                            
+                                                <button class="btn btn-lg btn-danger col-12 m-b-20" type="submit">Удалить</button> 
+                                            </form>
+                                        </div>
+                                        <div class="col-4"></div>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,5 @@
+{% autoescape off %}
+Привет {{ student.fullname }},
+Тебя пригласили на вакансию {{ vacancy.title }} с зарплатой {{ vacancy.salary }} тенге!
+Если интересно, свяжитесь с работодателем: {{ vacancy.owner.email }}
+{% endautoescape %}

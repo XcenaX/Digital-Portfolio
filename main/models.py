@@ -55,14 +55,6 @@ class Student(models.Model):
     def __str__(self):
         return self.username
 
-class Request(models.Model):
-    pub_date = models.DateTimeField(default=timezone.now)
-    owner = models.ForeignKey(Employer, on_delete=models.CASCADE, default=None)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
-    is_applied = models.BooleanField(default=False)
-    def __str__(self):
-        return self.student.fullname
-
 
 class Vacancy(models.Model):
     title = models.TextField(default='')
@@ -74,6 +66,16 @@ class Vacancy(models.Model):
     views = models.ManyToManyField(View, blank=True)
     def __str__(self):
         return self.title
+
+
+class Request(models.Model):
+    pub_date = models.DateTimeField(default=timezone.now)
+    owner = models.ForeignKey(Employer, on_delete=models.CASCADE, default=None)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
+    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, default=None)
+    is_applied = models.BooleanField(default=False)
+    def __str__(self):
+        return self.student.fullname
 
 
 class Applied_Vacancy(models.Model):

@@ -300,7 +300,7 @@ def index(request):
     vacancies = Vacancy.objects.all()
     print('[INFO] Vacancies setted')
 
-    if not user:
+    if not user or not user.is_active:
         return redirect(reverse('main:login'))
         
     return render(request, 'index.html', {
@@ -383,6 +383,7 @@ def portfolio_show(request, id):
             })
     user = Student.objects.filter(id=id).first()
     employer_request = Request.objects.filter(owner=employer).first()
+    vacancies = Vacancy.objects.filter(owner=employer)
     is_request_sended = False
     if employer_request:
         is_request_sended = True
@@ -392,6 +393,7 @@ def portfolio_show(request, id):
         "user": employer,
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
+        "vacancies": vacancies
     }) 
 
 
