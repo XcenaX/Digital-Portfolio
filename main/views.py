@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 #from .forms import UserForm, CommentForm, BlogForm
-from .models import Student, City, University, Employer, Request, Achivement, Vacancy, View
+from .models import Student, Employer, Request, Achivement, Vacancy, View
 
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -126,7 +126,7 @@ def filter_users(request):
         else:
             blocks = Vacancy.objects.all()
         if q:
-            blocks = blocks.filter(Q(fullname__icontains=q))# | Q(question__contains=search_text) | Q(subject__contains=search_text))
+            blocks = blocks.filter(Q(fullname__icontains=q) | Q(title__icontains=q) | Q(salary__icontains=q))
     #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
     else:
         if category == "old":
@@ -140,7 +140,7 @@ def filter_users(request):
         else:
             blocks = Student.objects.filter(is_searching_work=True)
         if q:
-            blocks = blocks.filter(Q(fullname__icontains=q) | Q(university__name__icontains=q) | Q(date_of_birth__icontains=q))
+            blocks = blocks.filter(Q(fullname__icontains=q) | Q(university__icontains=q) | Q(university_course__icontains=q) | Q(city__icontains=q))
     return blocks
 
 def logout(request):
@@ -361,6 +361,8 @@ def portfolio_edit(request):
         user.university_course = course if course else user.university_course
         user.date_of_birth = date_of_birth if date_of_birth else user.date_of_birth
         user.about = resume if resume else user.about
+        user.university = university if university else user.university
+        user.city = location if location else user.city
 
         user.save()
 

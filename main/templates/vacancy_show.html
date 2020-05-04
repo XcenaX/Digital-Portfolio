@@ -13,18 +13,26 @@
 <div class="row">
 <div class="col-3">
     <img src="{{vacancy.owner.img_url}}" class="achivement-img mgt-50" alt="">
-        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0 mgt-20">                                           
+        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0 m-t-20" >                                           
             <div class="card shadow-sm x-shadow-fade-in">
-                <div type="text" class="input100 p-t-10">
+                <div type="text" class="input100 p-t-10" style="height:auto">
                     <span style="float:left">Работодатель:&emsp; </span> <h3  style="float:left">{{vacancy.owner.fullname}}</h3>
                 </div>
                 <span class="focus-input100"></span>
             </div>                                            
         </div>
-        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0 mgt-10">                                           
+        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0 m-t-10" >                                           
             <div class="card shadow-sm x-shadow-fade-in">
-                <div class="input100 p-t-10">
+                <div class="input100 p-t-10" style="height:auto">
                     <span style="float:left">Опубликовано:&emsp;</span> <h3  style="float:left" style="float:left"> {{vacancy.pub_date}}</h3>
+                </div>
+                <span class="focus-input100"></span>
+            </div>                                            
+        </div>
+        <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0 m-t-10" >                                           
+            <div class="card shadow-sm x-shadow-fade-in">
+                <div class="input100 p-t-10" style="height:auto">
+                    <span style="float:left">Просмотры:&emsp;</span> <h3  style="float:left" style="float:left"> {{vacancy.views.all|length}}</h3>
                 </div>
                 <span class="focus-input100"></span>
             </div>                                            
@@ -37,7 +45,7 @@
         <div class=" active" id="portfolio">
             <form class="form" action="{% url 'main:apply_vacancy' %}" method="post" >{% csrf_token %}
                 <div class="form-group">
-                    <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative">                 
+                    <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative p-0">                 
                         <div class="card shadow-sm x-shadow-fade-in">
                             <h1 class="resume-title inherit-style">Описание</h1>                           
                             <textarea disabled  id="resume" class="resume" rows="10">{{vacancy.content}}</textarea>
@@ -48,7 +56,7 @@
                 {% if request.session.role == "student"%}
 
                 <div class="form-group">          
-                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12">
+                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
                         <input hidden type="text" value="{{vacancy.id}}" name="vacancy_id">                            
                         <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Откликнуться</button>    
                     </div>                                                            

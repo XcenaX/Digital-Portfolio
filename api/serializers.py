@@ -8,20 +8,34 @@ class StudentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Student
-        fields = ["is_searching_work", "email", "password", "username", "fullname", "img_url", "medcard_url", "university_course", "specialty", "date_of_birth", "date_of_register", "is_active", "achivements", "views", "vk", "telegram", "about"]
+        fields = ["id", "is_searching_work", "email", "password", "username", "fullname", "img_url", "medcard_url", "university", "university_course", "specialty", "date_of_birth", "date_of_register", "is_active", "achivements", "views", "vk", "telegram", "about"]
 
 class EmployerSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = Employer
-        fields = ["email", "password", "username", "fullname", "img_url", "date_of_birth", "date_of_register", "is_active"]
+        fields = ["id", "email", "password", "username", "fullname", "img_url", "date_of_register", "is_active", "vk", "telegram", "description"]
 
 class AchivementSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = Achivement
-        fields = ["description", "img_url", "pub_date"]
+        fields = ["id", "description", "img_url", "pub_date"]
+
+class VacancySerializer(serializers.HyperlinkedModelSerializer):    
+    owner = serializers.HyperlinkedRelatedField(many=False, view_name='employer-id', read_only=True)
+    views = serializers.HyperlinkedRelatedField(many=True, view_name='employer-views', read_only=True)
+
+    class Meta:
+        model = Vacancy
+        fields = ["id", "title", "content", "pub_date", "salary", "is_active", "owner", "views"]
 
 class ViewSerializer(serializers.HyperlinkedModelSerializer):    
+    owner = serializers.HyperlinkedRelatedField(many=False, view_name='student-id', read_only=True)
     class Meta:
         model = View
-        fields = ["owner"]
-    
+        fields = ["id", "owner"]
+
+class VacancyViewSerializer(serializers.HyperlinkedModelSerializer):    
+    owner = serializers.HyperlinkedRelatedField(many=False, view_name='employer-id', read_only=True)
+    class Meta:
+        model = VacancyView
+        fields = ["id", "owner"]

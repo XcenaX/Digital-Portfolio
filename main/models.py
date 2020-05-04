@@ -2,13 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
-class City(models.Model):
-    name = models.TextField(default="")
-
-class University(models.Model):
-    name = models.TextField(default="")
-    city = models.OneToOneField(City, on_delete=models.CASCADE, primary_key=True)
-
 class Achivement(models.Model):
     description = models.TextField()
     img_url = models.TextField(default="")
@@ -33,6 +26,8 @@ class Employer(models.Model): # работодатель
 class View(models.Model):
     owner = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
+
+
 class Student(models.Model):
     is_searching_work = models.BooleanField(default=True)
     email = models.TextField(default="") 
@@ -41,7 +36,8 @@ class Student(models.Model):
     fullname= models.TextField(default="") 
     img_url = models.TextField(default=settings.STATIC_URL+"images/icons/user.png")
     medcard_url = models.TextField(default="", blank=True)
-    university = models.ForeignKey(University, on_delete=models.CASCADE, null=True, blank=True)
+    university = models.TextField(default="")
+    city = models.TextField(default="")
     university_course = models.IntegerField(null=True, blank=True)
     specialty = models.TextField(default="", blank=True)
     date_of_birth = models.DateField(null=True, blank=True) 
@@ -55,6 +51,8 @@ class Student(models.Model):
     def __str__(self):
         return self.username
 
+class VacancyView(models.Model):
+    owner = models.ForeignKey(Student, on_delete=models.CASCADE)
 
 class Vacancy(models.Model):
     title = models.TextField(default='')
@@ -63,7 +61,7 @@ class Vacancy(models.Model):
     pub_date = models.DateTimeField(default=timezone.now)
     owner = models.ForeignKey(Employer, on_delete=models.CASCADE, default=None)
     is_active = models.BooleanField(default=True)
-    views = models.ManyToManyField(View, blank=True)
+    views = models.ManyToManyField(VacancyView, blank=True)
     def __str__(self):
         return self.title
 

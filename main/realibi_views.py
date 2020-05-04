@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Employer, Request, Student, Vacancy, Applied_Vacancy
+from .models import Employer, Request, Student, Vacancy, Applied_Vacancy, VacancyView
 from .views import get_current_user, get_current_site, render_to_string, send_email
 from django.http import HttpResponse
 
@@ -69,6 +69,7 @@ def get_vacancies_by_employer_id(id):
 
 
 def profile_add_vacancy(request):
+    current_user = get_current_user(request)
     if request.method == "POST":
         title = request.POST['title']
         content = request.POST['content']
@@ -79,7 +80,9 @@ def profile_add_vacancy(request):
         if vacancy.save():
             return render(request, 'profile_my_vacancies.html')
 
-    return render(request, 'profile_add_vacancy.html')
+    return render(request, 'profile_add_vacancy.html',{
+        "user": current_user
+    })
 
 
 def profile_delete_vacancy(request):
@@ -94,25 +97,37 @@ def profile_delete_vacancy(request):
     current_user = get_current_user(request)
 
     vacancies = get_vacancies_by_employer_id(current_user.id)
-    return render(request, 'profile_my_vacancies.html', {"vacancies": vacancies})
+    return render(request, 'profile_my_vacancies.html', {
+        "vacancies": vacancies,
+        "user": current_user,
+    })
 
 
 def profile_my_vacancies(request):
     current_user = get_current_user(request)
     print("[INFO] --------------------- Current user id: " + str(current_user.id) + " -----------------")
     vacancies = get_vacancies_by_employer_id(current_user.id)
-    return render(request, 'profile_my_vacancies.html', {"vacancies": vacancies})
+    return render(request, 'profile_my_vacancies.html', {
+        "vacancies": vacancies,
+        "user": current_user
+    })
 
 
 def vacancy_show(request, id):
     vacancy = Vacancy.objects.filter(id=id).first()
     current_user = get_current_user(request)
 
+    if len(VacancyView.objects.filter(owner=current_user)) == 0:
+        view = VacancyView.objects.create(owner=current_user)
+        vacancy.views.add(view)
+        vacancy.save()
+
     applied_vacancies = Applied_Vacancy.objects.filter(vacancy=vacancy)
 
     return render(request, 'vacancy_show.html', {
         'vacancy': vacancy,
-        'applied_vacancies': applied_vacancies
+        'applied_vacancies': applied_vacancies,
+        "user": current_user
     }) 
 
 
