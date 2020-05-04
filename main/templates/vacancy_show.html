@@ -43,7 +43,6 @@
     <h3  class="important-text" style="margin:30px auto;text-align:left; color:green">{{vacancy.salary}} тенге</h3>
     <div class="tab-content">
         <div class=" active" id="portfolio">
-            <form class="form" action="{% url 'main:apply_vacancy' %}" method="post" >{% csrf_token %}
                 <div class="form-group">
                     <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 relative p-0">                 
                         <div class="card shadow-sm x-shadow-fade-in">
@@ -54,26 +53,46 @@
                 </div>
 
                 {% if request.session.role == "student"%}
-
-                <div class="form-group">          
-                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
-                        <input hidden type="text" value="{{vacancy.id}}" name="vacancy_id">                            
-                        <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Откликнуться</button>    
-                    </div>                                                            
-                </div>
-
+                <form class="form" action="{% url 'main:apply_vacancy' %}" method="post" >{% csrf_token %}
+                    <div class="form-group">          
+                        <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
+                            <input hidden type="text" value="{{vacancy.id}}" name="vacancy_id">                            
+                            <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Откликнуться</button>    
+                        </div>                                                            
+                    </div>
+                </form>
                 {% elif request.session.role == "employer" %}
                 <h5 class="login100-form-title p-b-51">Откликнувшиеся студенты:</h5>
-                    {% for vacancy in applied_vacancies %}
+                    {% for request in requests %}
                         <div class="card shadow-sm x-shadow-fade-in">
                             <div type="text" class="input100 p-t-10">
-                                <span style="float:left">{{vacancy.student.fullname}}</span>
+                                <span style="text-align: center; width: 100%">{{request.student.fullname}}</span>
                             </div>
-                            <span class="focus-input100"></span>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-2 col-xs-12"></div>
+                                <div class="col-md-2 col-xs-12">
+                                    <form action="{% url 'main:accept_student' %}" method="POST">{% csrf_token %}
+                                        <input hidden type="text" value="{{vacancy.id}}" name="vacancy_id">
+                                        <input hidden type="text" value="{{request.student.id}}" name="student_id">
+                                        <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Принять</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-2 col-xs-12"></div>
+                                <div class="col-md-2 col-xs-12"></div>
+                                <div class="col-md-2 col-xs-12">
+                                    <form action="{% url 'main:decline_student' %}" method="POST">{% csrf_token %}
+                                        <input hidden type="text" value="{{vacancy.id}}" name="vacancy_id">
+                                        <input hidden type="text" value="{{request.student.id}}" name="student_id">
+                                        <button id="sendRequestBtn" class="btn btn-lg btn-danger col-12 m-b-20" type="submit">Отклонить</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-2 col-xs-12"></div>
+                            </div>
                         </div>
+                        <br><br>
                     {% endfor %}
                 {% endif %}
-            </form>
         </div><!--/-->                            
     </div><!--/tab-content-->
 </div>

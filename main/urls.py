@@ -28,6 +28,8 @@ urlpatterns = [
     path('profile_my_vacancies', realibi_views.profile_my_vacancies, name="profile_my_vacancies"),
     path('apply_vacancy', realibi_views.apply_vacancy, name="apply_vacancy"),
     path('profile_delete_vacancy', realibi_views.profile_delete_vacancy, name="delete_vacancy"),
+    path('accept_student', realibi_views.accept_student, name="accept_student"),
+    path('decline_student', realibi_views.decline_student, name="decline_student"),
     
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='activate'),    
 ]

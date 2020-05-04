@@ -57,7 +57,7 @@ def send_request(request):
             })
     
 
-    new_request = Request.objects.create(owner=user, student=student, vacancy=vacancy)
+    new_request = Request.objects.create(owner=user, student=student, vacancy=vacancy, is_invitation=True)
     new_request.save()
 
     return render(request, 'message.html', { "text": "Приглашение отправлено успешно!" })
@@ -117,16 +117,17 @@ def vacancy_show(request, id):
     vacancy = Vacancy.objects.filter(id=id).first()
     current_user = get_current_user(request)
 
-    if len(VacancyView.objects.filter(owner=current_user)) == 0:
-        view = VacancyView.objects.create(owner=current_user)
-        vacancy.views.add(view)
-        vacancy.save()
+    if isinstance(current_user, Student):
+        if len(VacancyView.objects.filter(owner=current_user)) == 0:
+            view = VacancyView.objects.create(owner=current_user)
+            vacancy.views.add(view)
+            vacancy.save()
 
-    applied_vacancies = Applied_Vacancy.objects.filter(vacancy=vacancy)
+    requests = Request.objects.filter(vacancy=vacancy, is_applied=False, is_invitation=False)
 
     return render(request, 'vacancy_show.html', {
         'vacancy': vacancy,
-        'applied_vacancies': applied_vacancies,
+        'requests': requests,
         "user": current_user
     }) 
 
@@ -136,10 +137,81 @@ def apply_vacancy(request):
     current_user = get_current_user(request)
     vacancy = get_vacancy_by_id(vacancy_id)
 
-    if Applied_Vacancy.objects.filter(vacancy=vacancy, student=current_user):
-        return render(request, 'message.html', {'text': 'Вы уже откликались на вакансию ' + vacancy.title + '!'})
-    else:
-        applied_vacancy = Applied_Vacancy.objects.create(vacancy=vacancy, student=current_user)
+    applied_vacancy = Applied_Vacancy.objects.filter(vacancy=vacancy, student=current_user).first()
 
-        applied_vacancy.save()
-        return render(request, 'message.html', {'text': 'Вы откликнулись на вакансию ' + vacancy.title + '!'})
+    if applied_vacancy:
+        if applied_vacancy.accepted:
+            return render(request, 'message.html', {'text': 'Вы уже приглашены на эту вакансию!'})
+        else:
+            return render(request, 'message.html', {'text': 'К сожалению, работодатель уже отклонил ваше предложение по этой вакансии!'})
+    else:
+        vacancy_request = Request.objects.create(owner=vacancy.owner, student=current_user, vacancy=vacancy)
+
+        vacancy_request.save()
+        return render(request, 'message.html', {'text': 'Вы откликнулись на вакансию ' + vacancy.title + '! Ожидайте ответа от работодателя!'})
+
+
+def accept_student(request):
+    vacancy_id = request.POST['vacancy_id']
+    student_id = request.POST['student_id']
+
+    current_user = get_current_user(request)
+    vacancy = Vacancy.objects.filter(id=vacancy_id).first()
+    student = Student.objects.filter(id=student_id).first()
+
+    vacancy_request = Request.objects.filter(student=student, vacancy=vacancy).first()
+    vacancy_request.is_applied = True
+    vacancy_request.save()
+
+    applied_vacancy = Applied_Vacancy.objects.create(vacancy=vacancy, student=student, accepted=True)
+    applied_vacancy.save()
+
+    try:
+        mail_subject = 'Приглашение на работу!'
+        message = render_to_string('student_accepted_email.html', {
+            'user': student,
+            'vacancy': vacancy,
+            "mail_subject": mail_subject,
+        })
+        to_email = student.email
+        
+        send_email(message, mail_subject, to_email)
+
+    except Exception as error:
+            return render(request, 'message.html', {
+                "text" : error,
+            })
+
+    return vacancy_show(request, vacancy_id)
+
+
+def decline_student(request):
+    vacancy_id = request.POST['vacancy_id']
+    student_id = request.POST['student_id']
+
+    vacancy = Vacancy.objects.filter(id=vacancy_id).first()
+    student = Student.objects.filter(id=student_id).first()
+
+    vacancy_request = Request.objects.filter(student=student, vacancy=vacancy)
+    vacancy_request.delete()
+
+    applied_vacancy = Applied_Vacancy.objects.create(vacancy=vacancy, student=student, accepted=False)
+    applied_vacancy.save()
+
+    try:
+        mail_subject = 'В следующий раз повезет!'
+        message = render_to_string('student_declined_email.html', {
+            'user': student,
+            'vacancy': vacancy,
+            "mail_subject": mail_subject,
+        })
+        to_email = student.email
+        
+        send_email(message, mail_subject, to_email)
+
+    except Exception as error:
+            return render(request, 'message.html', {
+                "text" : error,
+            })
+
+    return vacancy_show(request, vacancy_id)

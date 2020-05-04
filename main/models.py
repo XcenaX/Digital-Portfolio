@@ -26,8 +26,6 @@ class Employer(models.Model): # работодатель
 class View(models.Model):
     owner = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
-
-
 class Student(models.Model):
     is_searching_work = models.BooleanField(default=True)
     email = models.TextField(default="") 
@@ -72,6 +70,7 @@ class Request(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, default=None)
     is_applied = models.BooleanField(default=False)
+    is_invitation = models.BooleanField(default=False)
     def __str__(self):
         return self.student.fullname
 
@@ -79,5 +78,6 @@ class Request(models.Model):
 class Applied_Vacancy(models.Model):
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, default=None)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=None)
+    accepted = models.BooleanField(default=False)
     def __str__(self):
         return self.vacancy.title
