@@ -214,15 +214,17 @@ def register(request):
             if role == "student":
                 students = Student.objects.filter(email=email)
                 if len(students) > 0:
-                    students = Student.objects.filter(username=username)
-                    if len(students) > 0:
-                        raise Exception
+                    raise Exception
+                students = Student.objects.filter(username=username)
+                if len(students) > 0:
+                    raise Exception
             elif role == "employer":
                 employers = Employer.objects.filter(email=email)
                 if len(employers) > 0:
-                    employers = Employer.objects.filter(username=username)
-                    if len(employers) > 0:
-                        raise Exception
+                    raise Exception
+                employers = Employer.objects.filter(username=username)
+                if len(employers) > 0:
+                    raise Exception
         except:
            user = False
         
