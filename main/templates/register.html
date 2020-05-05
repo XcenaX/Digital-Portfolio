@@ -20,9 +20,9 @@
     <link rel="icon" 					   href="{%static 'images/logo-cuted.png'%}"/>
 
 </head>
-<body class="login-body" style="background:url({%static 'images/background.png'%});">
+<body class="" >
 	
-	<div class="limiter">
+	<div class="limiter login-body" style="background:url({%static 'images/background.png'%});">
 		<div class="container-login100">
 			<div class="wrap-login100 adaptive-width" >
 				<form class="login100-form validate-form flex-sb flex-w" style="justify-content:space-around" action="{%url 'main:register'%}" method="post" >{% csrf_token %}
