@@ -1,7 +1,7 @@
 
 from main.models import Student, Employer, Achivement, View, Vacancy, VacancyView
 from rest_framework import viewsets
-from api.serializers import StudentSerializer, EmployerSerializer, AchivementSerializer, ViewSerializer, VacancySerializer
+from api.serializers import StudentSerializer, EmployerSerializer, AchivementSerializer, ViewSerializer, VacancySerializer, VacancyViewSerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
@@ -111,8 +111,8 @@ def vacancy_id(request, pk):
 #@permission_classes([IsAuthenticated])
 def views(request):    
     if request.method == 'GET':
-        vacancies = View.objects.all()
-        serializer = ViewSerializer(vacancies, many=True, context={'request': request})        
+        views = View.objects.all()
+        serializer = ViewSerializer(views, many=True, context={'request': request})        
         return Response(serializer.data)
 
 @api_view(['GET'])
