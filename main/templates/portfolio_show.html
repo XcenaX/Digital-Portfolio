@@ -138,8 +138,12 @@
                         </select>   
                     </p>      
                         <br>       
-                        <br>           
-                        <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Отправить приглашение на почту</button>
+                        <br>        
+                        {% if is_request_sended%}   
+                            <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" disabled>Вы уже отправили приглашение</button>
+                        {% elif not is_request_sended%}
+                            <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Отправить приглашение на почту</button>
+                        {%endif %}
                     </div>
                 </div>
          
