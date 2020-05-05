@@ -159,7 +159,7 @@ def vacancy_show(request, id):
             view = VacancyView.objects.create(owner=current_user)
             vacancy.views.add(view)
             vacancy.save()
-        if len(Request.objects.filter(vacancy=vacancy, student=current_user ,is_applied=False, is_invitation=False)) > 0:
+        if len(Request.objects.filter(vacancy=vacancy, student=current_user , owner=vacancy.owner, is_invitation=False)) > 0:
             is_request_sended = True
 
     requests = Request.objects.filter(vacancy=vacancy, is_applied=False, is_invitation=False)
