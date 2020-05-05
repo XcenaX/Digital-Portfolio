@@ -71,13 +71,9 @@ class Request(models.Model):
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, default=None)
     is_applied = models.BooleanField(default=False)
     is_invitation = models.BooleanField(default=False)
-    def __str__(self):
-        return self.student
 
 
 class Applied_Vacancy(models.Model):
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, default=None)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=None)
     accepted = models.BooleanField(default=False)
-    def __str__(self):
-        return self.vacancy
