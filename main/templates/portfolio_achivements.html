@@ -25,7 +25,7 @@
                                         <span class="achive-description">{{block.description}}</span>
                                     </div>
                                     {% if request.session.role == "student"%}
-                                        <form class="form" action="{%url 'main:delete_achivement'%}" method="post" id="registrationForm">
+                                        <form class="form" action="{%url 'main:delete_achivement'%}" method="post" id="registrationForm"> {% csrf_token %}
                                             <input type="hidden" name="id" value="{{block.id}}" disabled>
                                             <button type="submit" href="###" class="cancel-img relative">
                                                 <img src="{%static 'images/icons/close.png'%}" alt="" class="cancel-img">
