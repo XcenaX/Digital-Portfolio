@@ -545,7 +545,11 @@ def update_social(request):
         user.vk = vk if vk else ""
         user.telegram = telegram if telegram else ""
         user.save()
-    return redirect(reverse('main:portfolio_edit'))
+    role = session_parameter(request, "role")
+    if role == "student":
+        return redirect(reverse('main:portfolio_edit'))
+    else:
+        return redirect(reverse('main:employer_profile'))
 
 def switch_search(request):
     if request.method == "POST":
