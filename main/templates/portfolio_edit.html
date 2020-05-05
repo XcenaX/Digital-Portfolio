@@ -54,7 +54,7 @@
                         
                         <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
                             <div class="card shadow-sm x-shadow-fade-in">
-                                <input type="text" name="location" class="input100" required id="location" value="{{user.university.city}}" placeholder="Город проживания" title="Город проживания">
+                                <input type="text" name="location" class="input100" required id="location" value="{{user.university}}" placeholder="Город проживания" title="Город проживания">
                                 <span class="focus-input100"></span>
                             </div>                                            
                         </div>
@@ -63,7 +63,7 @@
                         
                         <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
                             <div class="card shadow-sm x-shadow-fade-in">
-                                <input type="text" name="university" class="input100" required id="university" value="{%if user.university.name%} {{user.university.name}} {%endif%}" placeholder="Университет" title="Название университета">
+                                <input type="text" name="university" class="input100" required id="university" value="{%if user.city%} {{user.university.name}} {%endif%}" placeholder="Университет" title="Название университета">
                                 <span class="focus-input100"></span>
                             </div>                                            
                         </div>
