@@ -292,6 +292,7 @@ def activate(request, uidb64, token):
 
 def index(request):
     q = get_parameter(request, "q")
+    q = "" if not q else q
     category = get_parameter(request, "category")
     user = get_current_user(request)
     blocks = filter_users(request)
