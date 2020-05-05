@@ -72,7 +72,7 @@ class Request(models.Model):
     is_applied = models.BooleanField(default=False)
     is_invitation = models.BooleanField(default=False)
     def __str__(self):
-        return self.student.fullname
+        return self.student
 
 
 class Applied_Vacancy(models.Model):
@@ -80,4 +80,4 @@ class Applied_Vacancy(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=None)
     accepted = models.BooleanField(default=False)
     def __str__(self):
-        return self.vacancy.title
+        return self.vacancy
