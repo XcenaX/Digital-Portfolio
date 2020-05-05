@@ -1,5 +1,5 @@
 
-from main.models import Student, Employer, Achivement, View, Vacancy
+from main.models import Student, Employer, Achivement, View, Vacancy, VacancyView
 from rest_framework import viewsets
 from api.serializers import StudentSerializer, EmployerSerializer, AchivementSerializer, ViewSerializer, VacancySerializer
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -105,6 +105,38 @@ def vacancy_id(request, pk):
     if request.method == 'GET':
         vacancy = Vacancy.objects.filter(id=pk).first()
         serializer = VacancySerializer(vacancy, many=True, context={'request': request})        
+        return Response(serializer.data)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def views(request):    
+    if request.method == 'GET':
+        vacancies = View.objects.all()
+        serializer = ViewSerializer(vacancies, many=True, context={'request': request})        
+        return Response(serializer.data)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def view_id(request, pk):    
+    if request.method == 'GET':
+        view = View.objects.filter(id=pk).first()
+        serializer = ViewSerializer(view, many=True, context={'request': request})        
+        return Response(serializer.data)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def vacancy_views(request):    
+    if request.method == 'GET':
+        vacancyview = VacancyView.objects.all()
+        serializer = VacancyViewSerializer(vacancyview, many=True, context={'request': request})        
+        return Response(serializer.data)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def vacancy_view_id(request, pk):    
+    if request.method == 'GET':
+        vacancyview = VacancyView.objects.filter(id=pk).first()
+        serializer = VacancyViewSerializer(vacancyview, many=True, context={'request': request})        
         return Response(serializer.data)
 
 

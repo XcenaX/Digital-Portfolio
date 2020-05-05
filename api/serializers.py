@@ -3,8 +3,8 @@ from rest_framework import serializers
 
 
 class StudentSerializer(serializers.HyperlinkedModelSerializer):    
-    achivements = serializers.HyperlinkedRelatedField(many=True, view_name='student-achivements', read_only=True)
-    views = serializers.HyperlinkedRelatedField(many=True, view_name='student-views', read_only=True)
+    achivements = serializers.HyperlinkedRelatedField(many=True, view_name='achivement-id', read_only=True)
+    views = serializers.HyperlinkedRelatedField(many=True, view_name='view-id', read_only=True)
 
     class Meta:
         model = Student
@@ -22,7 +22,7 @@ class AchivementSerializer(serializers.HyperlinkedModelSerializer):
 
 class VacancySerializer(serializers.HyperlinkedModelSerializer):    
     owner = serializers.HyperlinkedRelatedField(many=False, view_name='employer-id', read_only=True)
-    views = serializers.HyperlinkedRelatedField(many=True, view_name='employer-views', read_only=True)
+    views = serializers.HyperlinkedRelatedField(many=True, view_name='view-id', read_only=True)
 
     class Meta:
         model = Vacancy
