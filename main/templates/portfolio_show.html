@@ -139,9 +139,9 @@
                     </p>      
                         <br>       
                         <br>        
-                        {% if is_request_sended%}   
+                        {% if vacancies|length == 0%}   
                             <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" disabled>Вы уже отправили приглашение</button>
-                        {% elif not is_request_sended%}
+                        {% else%}
                             <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Отправить приглашение на почту</button>
                         {%endif %}
                     </div>
