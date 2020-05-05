@@ -332,6 +332,9 @@
         };
     </script>
     <script type="text/javascript">
+        var cw = $('#avatar').width();
+        $('#avatar').css({'height':cw+'px'});
+
         $("#admin").addClass("active");
         var modal = document.getElementById("success-update");
         var btn = document.getElementById("close");
@@ -346,7 +349,6 @@
             $("#is_search")[0].click();
         }
 
-        var cw = $('#avatar').width();
-        $('#avatar').css({'height':cw+'px'});
+        
     </script>
 {% endblock %}
