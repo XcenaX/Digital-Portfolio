@@ -120,7 +120,7 @@ def views(request):
 def view_id(request, pk):    
     if request.method == 'GET':
         view = View.objects.filter(id=pk).first()
-        serializer = ViewSerializer(view, many=True, context={'request': request})        
+        serializer = ViewSerializer(view, many=False, context={'request': request})        
         return Response(serializer.data)
 
 @api_view(['GET'])
@@ -136,7 +136,7 @@ def vacancy_views(request):
 def vacancy_view_id(request, pk):    
     if request.method == 'GET':
         vacancyview = VacancyView.objects.filter(id=pk).first()
-        serializer = VacancyViewSerializer(vacancyview, many=True, context={'request': request})        
+        serializer = VacancyViewSerializer(vacancyview, many=False, context={'request': request})        
         return Response(serializer.data)
 
 
