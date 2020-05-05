@@ -123,7 +123,7 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            <form action="{%url 'main:logout'%}" method="post">
+                            <form action="{%url 'main:logout'%}" method="post">{% csrf_token %}
                                 <li class="exit-item">
                                     <a routerlinkactive="active" class="">
                                         <button type="submit" class="side-text">Выйти</button>
