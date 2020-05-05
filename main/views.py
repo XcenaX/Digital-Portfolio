@@ -126,7 +126,7 @@ def filter_users(request):
         else:
             blocks = Vacancy.objects.all()
         if q:
-            blocks = blocks.filter(Q(fullname__icontains=q) | Q(title__icontains=q) | Q(salary__icontains=q))
+            blocks = blocks.filter(Q(content__icontains=q) | Q(title__icontains=q) | Q(salary__icontains=q))
     #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
     else:
         if category == "old":
