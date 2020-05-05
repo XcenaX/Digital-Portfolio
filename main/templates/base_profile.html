@@ -123,11 +123,13 @@
                                     </a>
                                 </li>
                             {% endif %}
-                            <li class="exit-item">
-                                <a routerlinkactive="active" href="{%url 'main:logout'%}" class="">
-                                <span class="side-text">Выйти</span>
-                                </a>
-                            </li>
+                            <form action="{%url 'main:logout'%}" method="post">
+                                <li class="exit-item">
+                                    <a routerlinkactive="active" class="">
+                                        <button type="submit" class="side-text">Выйти</button>
+                                    </a>
+                                </li>
+                            </form>
                             </ul>
                         </div>
                         </div>

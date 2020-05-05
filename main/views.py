@@ -150,7 +150,7 @@ def logout(request):
             del request.session["role"]
         except:
             print("error")
-    return redirect(reverse('main:index'))
+    return redirect(reverse('main:login'))
 
 def login(request):
     user = None
