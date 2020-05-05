@@ -172,7 +172,7 @@
                                     
                                     <form action="{%url 'main:update_avatar'%}" style="text-align:center" enctype="multipart/form-data" method="post">{% csrf_token %}
                                         <div class="relative">
-                                            <img src="{{user.img_url}}" id="avatar" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
+                                            <img src="{{user.img_url}}" id="profileavatar" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
                                             <input type="file" name="avatar" class="absolute-link" style="opacity:0;cursor:pointer;" />    
                                         </div>
                                         <button class="btn btn-lg btn-success col-6" type="submit">Загрузить</button>
@@ -302,7 +302,7 @@
             $("#is_search")[0].click()
         }
 
-        var cw = $('#avatar').width();
-        $('#avatar').css({'height':cw+'px'});
+        var cw = $('#profileavatar').width();
+        $('#profileavatar').css({'height':cw+'px'});
     </script>
 {% endblock %}
