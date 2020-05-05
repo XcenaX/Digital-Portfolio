@@ -15,12 +15,12 @@
 
 {% block content %}
     <div class="s003">
-      <form action="###" method="get">
+      <form action="" method="get">
         <div class="inner-form">
           <div class="input-field first-wrap">
             <div class="input-select">
               <select data-trigger="" name="category" id="select">
-                <option placeholder="">Фильтр</option>
+                <option placeholder="" value="">Фильтр</option>
                 {% for key, value in category_values.items %}
                   <option {%if key == category%} selected {%endif%}value="{{key}}">{{value}}</option>
                 {% endfor%}
@@ -51,18 +51,18 @@
             {% for block in blocks %}
             {% if request.session.role == "employer"%}
                 <div class="form-group">
-                  <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12">
+                  <div class="wrap-input100 validate-input m-b-16 col-md-3 col-sm-12">
                     <div class="card shadow-sm x-shadow-fade-in">
                       <img src="{{block.img_url}}" class="achivement-img" alt="">
                         <div class="achivement-div p-t-10 p-b-10 p-r-10 p-l-10">
                           <h2 class="achive-title">{{block.fullname}}</h2>
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Университет: </h4>
-                            <h4>{%if block.university.name%}{{block.university.name}}{%else%} не указано{%endif%}</h4>
+                            <h4>{%if block.university%}{{block.university}}{%else%} не указано{%endif%}</h4>
                           </div>
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Город: </h4>
-                            <h4>{%if block.university.city%}{{block.university.city}}{%else%} не указано{%endif%}</h4>
+                            <h4>{%if block.city%}{{block.city}}{%else%} не указано{%endif%}</h4>
                           </div>
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Курс: </h4>
@@ -83,7 +83,7 @@
                 </div>
             {%elif request.session.role == "student"%}
                 <div class="form-group">
-                  <div class="wrap-input100 validate-input m-b-16 col-md-2 col-sm-12">
+                  <div class="wrap-input100 validate-input m-b-16 col-md-3 col-sm-12">
                     <div class="card shadow-sm x-shadow-fade-in">
                       <img src="{{block.owner.img_url}}" class="achivement-img" alt="">
                         <div class="achivement-div p-t-10 p-b-10 p-r-10 p-l-10">
@@ -91,6 +91,10 @@
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Зарплата: </h4>
                             <h4>{{block.salary}}</h4>
+                          </div>
+                          <div class="inline-text m-t-10">
+                            <h4 class="important-text">Описание: </h4>
+                            <h4>{{block.content}}</h4>
                           </div>
                         </div>
                         <a href="{%url 'main:vacancy_show' block.id%}" class="absolute-link"></a>
@@ -106,7 +110,7 @@
       </div>
       <!--/col-9-->
     </div>
-    {% if blocks%}
+    {% if blocks and pages|length > 1%}
       <div class="navigation">
           <ul>
               {% for page in pages%}

@@ -16,35 +16,20 @@
             <div class="" id="requests">
                 <div class="wrap-input100 validate-input m-b-16 col-xl-6 col-sm-12">
                     <div class="card shadow-sm x-shadow-fade-in">
-                        <img src="{{block.img_url}}" class="achivement-img" alt="">
+                        <img src="{{block.owner.img_url}}" class="achivement-img" alt="">
                         <div class="achivement-div" style="padding:10px">
                             <h2 class="achive-title">{{block.owner.fullname}}</h2>
                             <div class="inline-text">
-                                <h4 class="important-text">Компания: </h4>
-                                <h4>{{block.owner.company}}</h4>
+                                <h4 class="important-text">Вакансия: </h4>
+                                <h4>{{block.vacancy.title}}</h4>
                             </div>
 
                             <div>
-                                <h4 class="important-text" style="float: left;">Дополнительно: </h3>
-                                    <h4>{{block.description}}</h4>
+                                <h4 class="important-text" style="float: left;">Зарплата: </h3>
+                                    <h4> {%if block.vacancy.salary%} {{block.vacancy.salary}} {%else%} не указано {%endif%}</h4>
                             </div>
                         </div>
-                        <div class="m-b-10">
-                            <form action="##" method="post" class="col-xl-6 col-sm-12">
-
-                                <input type="hidden" value="Id Предложения Bro">
-                                <button type="submit" class="btn btn-lg btn-success col-12 m-b-10"
-                                    style="border-radius: none;">Принять</button>
-
-                            </form>
-                            <form action="##" method="post" class="col-xl-6 col-sm-12">
-
-                                <input type="hidden" value="Id Предложения Bro">
-                                <button type="submit" class="btn btn-lg btn-danger col-12"
-                                    style="border-radius: none;">Отклонить</button>
-
-                            </form>
-                        </div>
+                        <a href="{%url 'main:vacancy_show' block.vacancy.id%}" class="absolute-link"></a>
 
                     </div>
                 </div>
@@ -54,6 +39,24 @@
             <h2 class="important-text" style="margin:30px auto;text-align:center;">У вас нет предложений работы!</h2>
         {%endif%}
     </div>
+
+    {% if blocks and pages|length > 1%}
+      <div class="navigation">
+          <ul>
+              {% for page in pages%}
+                  {% if page == blocks.number %}
+                      <li class="page-current">
+                          <span>{{page}}</span>
+                      </li>
+                  {% else %}
+                      <li class="page-nav">
+                          <a href="?page={{page}}"> {{page}} </a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+          </ul>
+      </div>
+    {%endif%}
 {% endblock%}
 
  

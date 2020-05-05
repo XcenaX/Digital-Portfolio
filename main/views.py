@@ -42,13 +42,13 @@ def get_paginated_blogs(request, paginator):
     except:
         page = 1
     a = ""
-    blog = ""
+    block = ""
     pages=[]
     if page:
         try:
-            blog = paginator.page(page)
+            block = paginator.page(page)
         except EmptyPage:
-            blog = paginator.page(paginator.num_pages)
+            block = paginator.page(paginator.num_pages)
             page = paginator.num_pages
 
         for i in range(page-2, page+3):
@@ -65,8 +65,8 @@ def get_paginated_blogs(request, paginator):
             pages.insert(0, 1)
     else:
         pages = [1,2,3,4,5,paginator.num_pages]
-        blog = paginator.page(1)
-    return blog, pages
+        block = paginator.page(1)
+    return block, pages
 
 
 def get_current_user(req):
@@ -126,7 +126,7 @@ def filter_users(request):
         else:
             blocks = Vacancy.objects.all()
         if q:
-            blocks = blocks.filter(Q(fullname__icontains=q) | Q(title__icontains=q) | Q(salary__icontains=q))
+            blocks = blocks.filter(Q(content__icontains=q) | Q(title__icontains=q) | Q(salary__icontains=q))
     #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
     else:
         if category == "old":
@@ -214,11 +214,15 @@ def register(request):
             if role == "student":
                 students = Student.objects.filter(email=email)
                 if len(students) > 0:
-                    raise Exception
+                    students = Student.objects.filter(username=username)
+                    if len(students) > 0:
+                        raise Exception
             elif role == "employer":
-                employers = Employer.objects.filter(username=username)
+                employers = Employer.objects.filter(email=email)
                 if len(employers) > 0:
-                    raise Exception
+                    employers = Employer.objects.filter(username=username)
+                    if len(employers) > 0:
+                        raise Exception
         except:
            user = False
         
@@ -292,6 +296,7 @@ def activate(request, uidb64, token):
 
 def index(request):
     q = get_parameter(request, "q")
+    q = "" if not q else q
     category = get_parameter(request, "category")
     user = get_current_user(request)
     blocks = filter_users(request)
@@ -327,6 +332,10 @@ def not_found(request):
 
 def portfolio_edit(request):
     user = get_current_user(request)
+    requests = Request.objects.filter(student=user, is_invitation=True)
+    if not user or not user.is_active:
+        return redirect(reverse('main:login'))
+
     if request.session["role"] == "employer":
         return redirect(reverse('main:index'))
     if request.method == "POST":
@@ -344,19 +353,20 @@ def portfolio_edit(request):
                 return render(request, 'portfolio_edit.html', {
                     "user": user,
                     "upload_error": upload_error,
+                    "requests": requests,
                 })
         except:
             is_image = False
 
         if is_image:
-            new_img_url = '/home/HACKDAY/portfolio/static/images/user/medcards/medcard'+str(user.id)+'.jpg'
+            new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/medcards/medcard'+str(user.id)+'.jpg'
             with open(new_img_url, 'wb') as handler:
                 for chunk in image.chunks():
                     handler.write(chunk)
             
-            new_img_url = "images/user/medcards/medcard" + str(user.id) + ".jpg"
+            new_img_url = "/static/images/user/medcards/medcard" + str(user.id) + ".jpg"
             
-            user.img_url = new_img_url
+            user.medcard_url = new_img_url
         user.fullname = fullname if fullname else user.fullname
         user.university_course = course if course else user.university_course
         user.date_of_birth = date_of_birth if date_of_birth else user.date_of_birth
@@ -369,16 +379,23 @@ def portfolio_edit(request):
         
         return render(request, 'portfolio_edit.html', {
             "user": get_current_user(request),
-            "success": "Вы успешно обновили профиль!"
+            "success": "Вы успешно обновили профиль!",
+            "requests": requests,
         }) 
 
     
     return render(request, 'portfolio_edit.html', {
         "user": user,
+        "requests": requests,
     })    
 
 def portfolio_show(request, id):
     employer = get_current_user(request)
+    
+    if not employer or not employer.is_active:
+        return redirect(reverse('main:login'))
+    
+    
     if employer:
         if request.session["role"] == "student":
             return render(request, 'after_register.html', {
@@ -386,12 +403,15 @@ def portfolio_show(request, id):
             })
     user = Student.objects.filter(id=id).first()
 
+    requests = Request.objects.filter(student=user, is_invitation=True)
+
     if len(user.views.filter(owner=employer)) == 0:
         view = View.objects.create(owner=employer)
         user.views.add(view)
 
     employer_request = Request.objects.filter(owner=employer).first()
     vacancies = Vacancy.objects.filter(owner=employer)
+    
     is_request_sended = False
     if employer_request:
         is_request_sended = True
@@ -401,76 +421,126 @@ def portfolio_show(request, id):
         "user": employer,
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
-        "vacancies": vacancies
+        "vacancies": vacancies,
+        "requests": requests,
     }) 
 
 
 def achivements_show(request, id):
     employer = get_current_user(request)
+
+    if not employer or not employer.is_active:
+        return redirect(reverse('main:login'))
+
     if employer:
         if request.session["role"] == "student":
             return render(request, 'after_register.html', {
                 "text" : "Только работодатели могут просматривать портфолио студентов!",
             })
     user = Student.objects.filter(id=id).first()
+    requests = Request.objects.filter(student=user, is_invitation=True)
     employer_request = Request.objects.filter(owner=employer).first()
     is_request_sended = False
     if employer_request:
         is_request_sended = True
+
+    achivements = user.achivements.all()
+    paginator = Paginator(achivements, COUNT_BLOG_ON_PAGE)
+    paginated_blocks, pages = get_paginated_blogs(request, paginator)
 
     return render(request, 'portfolio_achivements_show.html', {
         "student": user,
         "user": employer,
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
+        "blocks": paginated_blocks,
+        "pages": pages,
+        "requests": requests,
     }) 
 
  
 
 def portfolio_achivements(request):
     user = get_current_user(request)
+    requests = Request.objects.filter(student=user, is_invitation=True)
+    if not user or not user.is_active:
+        return redirect(reverse('main:login'))
+
+    achivements = user.achivements.all()
+    paginator = Paginator(achivements, COUNT_BLOG_ON_PAGE)
+    paginated_blocks, pages = get_paginated_blogs(request, paginator)
+
     return render(request, 'portfolio_achivements.html', {
         "user": user,
+        "blocks": paginated_blocks,
+        "pages": pages,
+        "requests": requests,
     })   
 
 def portfolio_requests(request):
     user = get_current_user(request)
+    requests = Request.objects.filter(student=user, is_invitation=True)
+    if not user or not user.is_active:
+        return redirect(reverse('main:login'))
+
+    requests = Request.objects.filter(student=user, is_invitation=True)
+    paginator = Paginator(requests, COUNT_BLOG_ON_PAGE)
+    paginated_blocks, pages = get_paginated_blogs(request, paginator)
+
+
     return render(request, 'portfolio_requests.html', {
         "user": user,
+        "blocks":  paginated_blocks,
+        "pages": pages,
+        "requests": requests,
     })   
 
 def portfolio_add_achivement(request):
     user = get_current_user(request)
+    requests = Request.objects.filter(student=user, is_invitation=True)
 
     if request.method == "POST":
-        description = post_parameter(request, 'descripotion')
+        description = post_parameter(request, 'description')
         image = post_file(request, 'achivement_img')
 
-        if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
-            upload_error = "Выберите .jpg или .png формат для картинки!" 
+        try:
+            if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
+                upload_error = "Выберите .jpg или .png формат для картинки!" 
+                return render(request, 'portfolio_add_achivement.html', {
+                    "user": user,
+                    "upload_error": upload_error,
+                    "requests": requests,
+                })
+        except:
+            upload_error = "Вы не выбрали картинку для сертификата!" 
             return render(request, 'portfolio_add_achivement.html', {
                 "user": user,
                 "upload_error": upload_error,
+                "requests": requests,
             })
 
         achivement = Achivement.objects.create(description=description)
 
-        new_img_url = '/home/HACKDAY/portfolio/static/images/user/achivements/achivement'+str(achivement.id)+'.jpg'
+        new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/achivements/achivement'+str(achivement.id)+'.jpg'
         with open(new_img_url, 'wb') as handler:
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "images/user/achivements/achivement" + str(blog.id) + ".jpg"
+        new_img_url = "/static/images/user/achivements/achivement" + str(achivement.id) + ".jpg"
         achivement.img_url = new_img_url
         achivement.save()
+        user.achivements.add(achivement)
+        user.save()
         return render(request, 'portfolio_add_achivement.html', {
             "user": user,
             "success": "Вы успешно добавили достижение!",
+            "requests": requests,
         })  
 
 
     return render(request, 'portfolio_add_achivement.html', {
         "user": user,
+        "requests": requests,
     })   
 
 def delete_achivement(request):
@@ -481,36 +551,55 @@ def delete_achivement(request):
     return redirect(reverse('main:portfolio_achivements'))
 
 def update_avatar(request):
+    role = session_parameter(request, "role")
     if request.method == "POST":
         user = get_current_user(request)
         if not user:
-            return redirect(reverse('main:portfolio_edit'))
+            if role == "student":
+                return redirect(reverse('main:portfolio_edit'))
+            else:
+                return redirect(reverse('main:employer_profile'))
         image = post_file(request, 'avatar')
         print(image.name)
         try:
             if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
                 upload_error = "Выберите .jpg или .png формат для картинки!" 
+                if role == "student":
+                    return render(request, 'portfolio_edit.html', {
+                        "user": user,
+                        "upload_error": upload_error,
+                    })
+                else:
+                    return render(request, 'employer_profile.html', {
+                        "user": user,
+                        "upload_error": upload_error,
+                    })
+        except:
+            upload_error = "Вы не выбрали картинку для аватара!"
+            if role == "student": 
                 return render(request, 'portfolio_edit.html', {
                     "user": user,
                     "upload_error": upload_error,
                 })
-        except:
-            upload_error = "Вы не выбрали картинку для аватара!" 
-            return render(request, 'portfolio_edit.html', {
+            else:
+                return render(request, 'employer_profile.html', {
                     "user": user,
                     "upload_error": upload_error,
                 })
-        
-        new_img_url = '/home/HACKDAY/portfolio/static/images/user/avatars/avatar'+str(user.id)+'.jpg'
+
+        new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/avatars/avatar'+str(user.id)+'.jpg'
         with open(new_img_url, 'wb') as handler:
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "images/user/avatars/avatar" + str(user.id) + ".jpg"
+        new_img_url = "/static/images/user/avatars/avatar" + str(user.id) + ".jpg"
         user.img_url = new_img_url
         user.save()
 
-    return redirect(reverse('main:portfolio_edit'))
+    if role == "student":
+        return redirect(reverse('main:portfolio_edit'))
+    else:
+        return redirect(reverse('main:employer_profile'))
 
 
 def update_social(request):
@@ -523,7 +612,11 @@ def update_social(request):
         user.vk = vk if vk else ""
         user.telegram = telegram if telegram else ""
         user.save()
-    return redirect(reverse('main:portfolio_edit'))
+    role = session_parameter(request, "role")
+    if role == "student":
+        return redirect(reverse('main:portfolio_edit'))
+    else:
+        return redirect(reverse('main:employer_profile'))
 
 def switch_search(request):
     if request.method == "POST":
@@ -531,6 +624,7 @@ def switch_search(request):
         is_search = post_parameter(request, 'is_search')
         user.is_searching_work = True if is_search == "on" else False
         user.save()
+
     return redirect(reverse('main:portfolio_edit') + "#is_search")
 
 

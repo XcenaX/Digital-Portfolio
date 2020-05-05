@@ -95,22 +95,22 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.mysql',
-#          'NAME': 'AKNYR$default',
-#          'USER': 'AKNYR',
-#          'PASSWORD': 'Dagad582#',         
-#          'HOST': 'AKNYR.mysql.pythonanywhere-services.com'
-#      }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
 # }
+
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'digitalportfolio$default',
+         'USER': 'digitalportfolio',
+         'PASSWORD': 'Dagad582#',         
+         'HOST': 'digitalportfolio.mysql.pythonanywhere-services.com'
+     }
+}
 
 
 # Password validation
@@ -150,7 +150,7 @@ TIME_ZONE = 'UTC'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = '/home/AKNYR/nova/static'
+STATIC_ROOT = '/home/digitalportfolio/Digital-Portfolio/main/static'
 STATIC_URL = '/static/'
 
 EMAIL_HOST = "smtp.gmail.com"

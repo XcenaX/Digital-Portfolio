@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .models import Employer, Request, Student, Vacancy, Applied_Vacancy, VacancyView
-from .views import get_current_user, get_current_site, render_to_string, send_email
+from .views import get_current_user, get_current_site, render_to_string, send_email, session_parameter
 from django.http import HttpResponse
+from django.db.models import Sum, Count
 
 def get_student_by_id(id):
     student = Student.objects.filter(id=id).first()
@@ -23,10 +24,18 @@ def get_vacancy_by_id(id):
 
 def employer_profile(request):
     user = get_current_user(request)
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=user, is_invitation=False)
     print("[INFO] User id: " + str(user.id))
 
     return render(request, 'employer_profile.html', {
-        "user": user
+        "user": user,
+        "count_views": count_views,
+        "requests": requests,
     })
 
 
@@ -74,14 +83,22 @@ def profile_add_vacancy(request):
         title = request.POST['title']
         content = request.POST['content']
         salary = request.POST['salary']
-        user = get_current_user(request)
 
-        vacancy = Vacancy.objects.create(title=title, content=content, salary=salary, owner=user)
+        vacancy = Vacancy.objects.create(title=title, content=content, salary=salary, owner=current_user)
         if vacancy.save():
             return render(request, 'profile_my_vacancies.html')
 
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=current_user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=current_user, is_invitation=False)
+
     return render(request, 'profile_add_vacancy.html',{
-        "user": current_user
+        "user": current_user,
+        "requests": requests,
+        "count_views": count_views,
     })
 
 
@@ -91,15 +108,25 @@ def profile_delete_vacancy(request):
         print('[INFO]----------------Vacancy id: ' + vacancy_id + '----------------')
         print("privet")
         vacancy = get_vacancy_by_id(vacancy_id)
-
+        requests = Request.objects.filter(vacancy=vacancy, is_invitation=False)
+        for item in requests:
+            item.delete()
         vacancy.delete()
 
     current_user = get_current_user(request)
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=current_user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=current_user, is_invitation=False)
 
     vacancies = get_vacancies_by_employer_id(current_user.id)
     return render(request, 'profile_my_vacancies.html', {
         "vacancies": vacancies,
         "user": current_user,
+        "requests": requests,
+        "count_views": count_views,
     })
 
 
@@ -107,17 +134,27 @@ def profile_my_vacancies(request):
     current_user = get_current_user(request)
     print("[INFO] --------------------- Current user id: " + str(current_user.id) + " -----------------")
     vacancies = get_vacancies_by_employer_id(current_user.id)
+
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=current_user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=current_user, is_invitation=False)
+
     return render(request, 'profile_my_vacancies.html', {
         "vacancies": vacancies,
-        "user": current_user
+        "user": current_user,
+        "requests": requests,
+        "count_views": count_views,
     })
 
 
 def vacancy_show(request, id):
     vacancy = Vacancy.objects.filter(id=id).first()
     current_user = get_current_user(request)
-
-    if isinstance(current_user, Student):
+    role= session_parameter(request, "role")
+    if role == "student":
         if len(VacancyView.objects.filter(owner=current_user)) == 0:
             view = VacancyView.objects.create(owner=current_user)
             vacancy.views.add(view)

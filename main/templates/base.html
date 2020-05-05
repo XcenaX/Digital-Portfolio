@@ -147,7 +147,7 @@
                                 <a style="color:white;" href="#">Digital University</a>
                                 <ul class="nav navbar-nav ml-auto">
                                     <li class="nav-item m-r-30">
-                                        <img src="{{user.img_url}}" class="nav-image inline-block" alt="">
+                                        <img src="{{user.img_url}}" class="nav-image inline-block" alt="" style="height:35px"> 
                                         <a class="nav-link inline-block" href="#">{{user.fullname}}</a>
                                     </li>
                                     <li class="nav-item">
@@ -233,5 +233,8 @@
                 $("#sendRequestBtn").prop('value', 'Отправлено!');
             }});
         });
+        var cw = $('.achivement-img').width();
+        $('.achivement-img').css({'height':cw+'px'});
     </script>
+    
 {% endblock %}

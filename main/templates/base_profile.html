@@ -58,7 +58,7 @@
                                 </li>
                             {% elif request.session.role == "employer" %}
                                 <li class="profile-item">
-                                    <a routerlinkactive="active" href="{%url 'main:index'%}" >
+                                    <a routerlinkactive="active" href="{%url 'main:employer_profile'%}" >
                                     <span class="side-text {%block header_button3%} {% endblock %}">Профиль</span>
                                     <div class="close-hover"> Профиль </div>
                                     </a>
@@ -97,7 +97,7 @@
                                     </li>
                                 {% elif request.session.role == "employer" %}
                                     <li class="profile-item">
-                                        <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}">
+                                        <a routerlinkactive="active" href="{%url 'main:employer_profile'%}">
                                         <span class="side-text">Профиль</span>
                                         </a>
                                     </li>
@@ -118,7 +118,7 @@
                                 </li>
                             {% elif request.session.role == "employer" %}
                                 <li class="profile-item">
-                                    <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}"  class="{%block header_button6%} {% endblock %}">
+                                    <a routerlinkactive="active" href="{%url 'main:employer_profile'%}"  class="{%block header_button6%} {% endblock %}">
                                     <span class="side-text">Профиль</span>
                                     </a>
                                 </li>
@@ -147,7 +147,7 @@
                                 <a style="color:white;" href="#">Digital University</a>
                                 <ul class="nav navbar-nav ml-auto">
                                     <li class="nav-item m-r-30">
-                                        <img src="{{user.img_url}}" class="nav-image inline-block" alt="">
+                                        <img src="{{user.img_url}}" class="nav-image inline-block" alt="" style="height:35px">
                                         <a class="nav-link inline-block" href="#">{{user.fullname}}</a>
                                     </li>
                                     <li class="nav-item">
@@ -172,7 +172,7 @@
                                     
                                     <form action="{%url 'main:update_avatar'%}" style="text-align:center" enctype="multipart/form-data" method="post">{% csrf_token %}
                                         <div class="relative">
-                                            <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
+                                            <img src="{{user.img_url}}" id="profileavatar" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
                                             <input type="file" name="avatar" class="absolute-link" style="opacity:0;cursor:pointer;" />    
                                         </div>
                                         <button class="btn btn-lg btn-success col-6" type="submit">Загрузить</button>
@@ -205,8 +205,8 @@
                                 
                                     <ul class="list-group m-t-30 card shadow-sm x-shadow-fade-in">
                                         <li class="list-group-item text-muted inherit-style">Статистика<i class="fa fa-dashboard fa-1x m-l-5"></i></li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Просмотры вакансий</strong></span> хз</li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Заявки</strong></span>  хз</li>
+                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Просмотры вакансий</strong></span> {{count_views}}</li>
+                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Заявки</strong></span>{{requests|length}}</li>
                                     </ul> 
 
                                     
@@ -288,6 +288,9 @@
         };
     </script>
     <script type="text/javascript">
+        cw = $('#profileavatar').width();
+        $('#profileavatar').css({'height':cw+'px'});
+
         $("#admin").addClass("active");
         var modal = document.getElementById("success-update");
         var btn = document.getElementById("close");
@@ -295,11 +298,13 @@
         if (btn) {
             btn.onclick = function () {
                 modal.style.display = "none";
-            };
+            }
         }
 
         $("#checkbox")[0].onchange = function(){
-            $("#is_search")[0].click()
+            $("#is_search")[0].click();
         }
+
+        
     </script>
 {% endblock %}

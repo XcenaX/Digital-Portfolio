@@ -3,6 +3,7 @@
 
 {%block styles %}
     <title>Достижения {{user.fullname}}</title>
+    <link rel="stylesheet" href="{%static 'css/pagination.css'%}">
 {% endblock %}
 
 {% block header_button5 %}active{% endblock %}
@@ -12,32 +13,51 @@
 {%block tab_content%}
     <div class="tab-content">
         <div class="">
-            {% for block in blocks%}
-                    <div class="form-group">
-                        <div class="wrap-input100 validate-input m-b-16 col-xl-6 col-sm-12">
-                            <div class="card shadow-sm x-shadow-fade-in">
-                                <img src="{{block.img_url}}" class="achivement-img"
-                                    alt="">
-                                <div class="achivement-div">
-                                    <h3 class="achive-title">{{block.title}}</h3>
-                                    <span class="achive-description">{{block.description}}</span>
+            {%if blocks%}
+                {% for block in blocks%}
+                        <div class="form-group">
+                            <div class="wrap-input100 validate-input m-b-16 col-xl-6 col-sm-12">
+                                <div class="card shadow-sm x-shadow-fade-in">
+                                    <img src="{{block.img_url}}" class="achivement-img"
+                                        alt="">
+                                    <div class="achivement-div">
+                                        <h3 class="achive-title">Описание</h3>
+                                        <span class="achive-description">{{block.description}}</span>
+                                    </div>
+                                    {% if request.session.role == "student"%}
+                                        <form class="form" action="{%url 'main:delete_achivement'%}" method="post" id="registrationForm"> {% csrf_token %}
+                                            <input type="hidden" name="id" value="{{block.id}}" >
+                                            <button type="submit" class="cancel-img relative">
+                                                <img src="{%static 'images/icons/close.png'%}" alt="" class="cancel-img">
+                                            </button>
+                                        </form>
+                                    {% endif %}
                                 </div>
-                                {% if request.session.role == "student"%}
-                                    <form class="form" action="{%url 'main:delete_achivement'%}" method="post" id="registrationForm">
-                                        <input type="hidden" name="id" value="{{block.id}}" disabled>
-                                        <button type="submit" href="###" class="cancel-img relative">
-                                            <img src="{%static 'images/icons/close.png'%}" alt="" class="cancel-img">
-                                        </button>
-                                    </form>
-                                {% endif %}
                             </div>
-                        </div>
-                    </div>    
-            {% endfor %}
-            {%if not blocks%}
+                        </div>    
+                {% endfor %}
+
+            {%else%}
                 <h2 class="important-text" style="margin:30px auto;text-align:center;">У вас нет достижений!</h2>
             {%endif%}
         </div>
     </div>
     <!--/tab-content-->
+    {% if blocks and pages|length > 1%}
+      <div class="navigation">
+          <ul>
+              {% for page in pages%}
+                  {% if page == blocks.number %}
+                      <li class="page-current">
+                          <span>{{page}}</span>
+                      </li>
+                  {% else %}
+                      <li class="page-nav">
+                          <a href="?page={{page}}"> {{page}} </a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+          </ul>
+      </div>
+    {%endif%}
 {%endblock%}

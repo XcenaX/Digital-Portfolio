@@ -22,7 +22,13 @@ urlpatterns = [
     path('vacancies/<int:pk>/views', views.vacancy_views, name="vacancy-views"),  
 
     path('achivements', views.achivements, name="achivements"),
-    path('achivements/<int:pk>', views.achivement_detail),
+    path('achivements/<int:pk>', views.achivement_detail, name="achivement-id"),
+
+    path('views', views.views, name="views"),
+    path('views/<int:pk>', views.view_id, name="view-id"),
+
+    path('vacancyviews', views.vacancy_views, name="vacancyviews"),
+    path('vacancyviews/<int:pk>', views.vacancy_view_id, name="vacancyview-id"),
 
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
@@ -31,3 +37,7 @@ urlpatterns = [
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+
+
+
+    

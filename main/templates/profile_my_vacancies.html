@@ -27,7 +27,7 @@
                                         <div class="col-4">
                                             <form action="{%url 'main:delete_vacancy'%}" method="POST">{% csrf_token %}
                                                 <input hidden type="text" value="{{vacancy.id}}" name="vacancyId">                            
-                                                <button class="btn btn-lg btn-danger col-12 m-b-20" type="submit">Удалить</button> 
+                                                <button class="btn btn-lg btn-danger col-12 m-b-20" style="z-index:10" type="submit">Удалить</button> 
                                             </form>
                                         </div>
                                         <div class="col-4"></div>
