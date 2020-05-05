@@ -24,8 +24,11 @@ def get_vacancy_by_id(id):
 
 def employer_profile(request):
     user = get_current_user(request)
+    count_views = 0
     vacancies = Vacancy.objects.filter(owner=user)
-    count_views = vacancies.objects.aggregate(Count('views'))
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
     requests = Request.objects.filter(owner=user)
     print("[INFO] User id: " + str(user.id))
 
