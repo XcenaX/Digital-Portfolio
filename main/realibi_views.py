@@ -100,7 +100,7 @@ def profile_delete_vacancy(request):
         print('[INFO]----------------Vacancy id: ' + vacancy_id + '----------------')
         print("privet")
         vacancy = get_vacancy_by_id(vacancy_id)
-        requests = Request.objets.filter(vacancy=vacancy, is_invitation=False)
+        requests = Request.objects.filter(vacancy=vacancy, is_invitation=False)
         for item in requests:
             item.delete()
         vacancy.delete()
