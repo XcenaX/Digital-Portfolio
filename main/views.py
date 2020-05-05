@@ -332,7 +332,7 @@ def not_found(request):
 
 def portfolio_edit(request):
     user = get_current_user(request)
-
+    requests = Request.objects.filter(student=user, is_invitation=True)
     if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
@@ -353,6 +353,7 @@ def portfolio_edit(request):
                 return render(request, 'portfolio_edit.html', {
                     "user": user,
                     "upload_error": upload_error,
+                    "requests": requests,
                 })
         except:
             is_image = False
@@ -378,12 +379,14 @@ def portfolio_edit(request):
         
         return render(request, 'portfolio_edit.html', {
             "user": get_current_user(request),
-            "success": "Вы успешно обновили профиль!"
+            "success": "Вы успешно обновили профиль!",
+            "requests": requests,
         }) 
 
     
     return render(request, 'portfolio_edit.html', {
         "user": user,
+        "requests": requests,
     })    
 
 def portfolio_show(request, id):
@@ -392,12 +395,15 @@ def portfolio_show(request, id):
     if not employer or not employer.is_active:
         return redirect(reverse('main:login'))
     
+    
     if employer:
         if request.session["role"] == "student":
             return render(request, 'after_register.html', {
                 "text" : "Только работодатели могут просматривать портфолио студентов!",
             })
     user = Student.objects.filter(id=id).first()
+
+    requests = Request.objects.filter(student=user, is_invitation=True)
 
     if len(user.views.filter(owner=employer)) == 0:
         view = View.objects.create(owner=employer)
@@ -415,7 +421,8 @@ def portfolio_show(request, id):
         "user": employer,
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
-        "vacancies": vacancies
+        "vacancies": vacancies,
+        "requests": requests,
     }) 
 
 
@@ -431,6 +438,7 @@ def achivements_show(request, id):
                 "text" : "Только работодатели могут просматривать портфолио студентов!",
             })
     user = Student.objects.filter(id=id).first()
+    requests = Request.objects.filter(student=user, is_invitation=True)
     employer_request = Request.objects.filter(owner=employer).first()
     is_request_sended = False
     if employer_request:
@@ -447,13 +455,14 @@ def achivements_show(request, id):
         "is_request_sended": is_request_sended,
         "blocks": paginated_blocks,
         "pages": pages,
+        "requests": requests,
     }) 
 
  
 
 def portfolio_achivements(request):
     user = get_current_user(request)
-
+    requests = Request.objects.filter(student=user, is_invitation=True)
     if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
@@ -465,11 +474,12 @@ def portfolio_achivements(request):
         "user": user,
         "blocks": paginated_blocks,
         "pages": pages,
+        "requests": requests,
     })   
 
 def portfolio_requests(request):
     user = get_current_user(request)
-
+    requests = Request.objects.filter(student=user, is_invitation=True)
     if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
@@ -482,10 +492,12 @@ def portfolio_requests(request):
         "user": user,
         "blocks":  paginated_blocks,
         "pages": pages,
+        "requests": requests,
     })   
 
 def portfolio_add_achivement(request):
     user = get_current_user(request)
+    requests = Request.objects.filter(student=user, is_invitation=True)
 
     if request.method == "POST":
         description = post_parameter(request, 'description')
@@ -497,12 +509,14 @@ def portfolio_add_achivement(request):
                 return render(request, 'portfolio_add_achivement.html', {
                     "user": user,
                     "upload_error": upload_error,
+                    "requests": requests,
                 })
         except:
             upload_error = "Вы не выбрали картинку для сертификата!" 
             return render(request, 'portfolio_add_achivement.html', {
                 "user": user,
                 "upload_error": upload_error,
+                "requests": requests,
             })
 
         achivement = Achivement.objects.create(description=description)
@@ -520,11 +534,13 @@ def portfolio_add_achivement(request):
         return render(request, 'portfolio_add_achivement.html', {
             "user": user,
             "success": "Вы успешно добавили достижение!",
+            "requests": requests,
         })  
 
 
     return render(request, 'portfolio_add_achivement.html', {
         "user": user,
+        "requests": requests,
     })   
 
 def delete_achivement(request):

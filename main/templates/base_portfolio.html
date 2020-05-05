@@ -237,7 +237,7 @@
                                     <ul class="list-group m-t-30 card shadow-sm x-shadow-fade-in">
                                         <li class="list-group-item text-muted inherit-style">Статистика<i class="fa fa-dashboard fa-1x m-l-5"></i></li>
                                         <li class="list-group-item text-right"><span class="pull-left"><strong>Просмотры Портфолио</strong></span> {% if request.session.role == "student"%} {{user.views.all|length}}    {%else%}{{student.views.all|length}} {%endif%}</li>
-                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Предложения Работы</strong></span>  {% if request.session.role == "student"%} {{user.requests.all|length}} {%else%}{{student.requests.all|length}} {%endif%}</li>
+                                        <li class="list-group-item text-right"><span class="pull-left"><strong>Предложения Работы</strong></span>  {% if request.session.role == "student"%} {{requests.all|length}} {%else%}{{requests.all|length}} {%endif%}</li>
                                     </ul> 
 
                                     {% if request.session.role == "student" %}
