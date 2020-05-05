@@ -435,7 +435,7 @@ def portfolio_achivements(request):
 
     return render(request, 'portfolio_achivements.html', {
         "user": user,
-        "blocks" = paginated_blocks,
+        "blocks": paginated_blocks,
     })   
 
 def portfolio_requests(request):
