@@ -332,6 +332,10 @@ def not_found(request):
 
 def portfolio_edit(request):
     user = get_current_user(request)
+
+    if not user or not user.is_applied:
+        return redirect(reverse('main:login'))
+
     if request.session["role"] == "employer":
         return redirect(reverse('main:index'))
     if request.method == "POST":
@@ -384,6 +388,10 @@ def portfolio_edit(request):
 
 def portfolio_show(request, id):
     employer = get_current_user(request)
+    
+    if not employer or not employer.is_applied:
+        return redirect(reverse('main:login'))
+    
     if employer:
         if request.session["role"] == "student":
             return render(request, 'after_register.html', {
@@ -413,6 +421,10 @@ def portfolio_show(request, id):
 
 def achivements_show(request, id):
     employer = get_current_user(request)
+
+    if not employer or not employer.is_applied:
+        return redirect(reverse('main:login'))
+
     if employer:
         if request.session["role"] == "student":
             return render(request, 'after_register.html', {
@@ -441,6 +453,10 @@ def achivements_show(request, id):
 
 def portfolio_achivements(request):
     user = get_current_user(request)
+
+    if not user or not user.is_applied:
+        return redirect(reverse('main:login'))
+
     achivements = user.achivements.all()
     paginator = Paginator(achivements, COUNT_BLOG_ON_PAGE)
     paginated_blocks, pages = get_paginated_blogs(request, paginator)
@@ -455,7 +471,7 @@ def portfolio_requests(request):
     user = get_current_user(request)
 
     if not user or not user.is_applied:
-
+        return redirect(reverse('main:login'))
 
     requests = Request.objects.filter(student=user)
 
@@ -587,6 +603,7 @@ def switch_search(request):
         is_search = post_parameter(request, 'is_search')
         user.is_searching_work = True if is_search == "on" else False
         user.save()
+
     return redirect(reverse('main:portfolio_edit') + "#is_search")
 
 
