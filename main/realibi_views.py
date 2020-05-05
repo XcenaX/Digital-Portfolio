@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Employer, Request, Student, Vacancy, Applied_Vacancy, VacancyView
-from .views import get_current_user, get_current_site, render_to_string, send_email
+from .views import get_current_user, get_current_site, render_to_string, send_email, session_parameter
 from django.http import HttpResponse
 from django.db.models import Sum, Count
 
@@ -125,8 +125,8 @@ def profile_my_vacancies(request):
 def vacancy_show(request, id):
     vacancy = Vacancy.objects.filter(id=id).first()
     current_user = get_current_user(request)
-
-    if isinstance(current_user, Student):
+    role= session_parameter(request, "role")
+    if role == "student":
         if len(VacancyView.objects.filter(owner=current_user)) == 0:
             view = VacancyView.objects.create(owner=current_user)
             vacancy.views.add(view)
