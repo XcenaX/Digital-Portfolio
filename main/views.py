@@ -503,26 +503,42 @@ def delete_achivement(request):
     return redirect(reverse('main:portfolio_achivements'))
 
 def update_avatar(request):
+    role = session_parameter(request, "role")
     if request.method == "POST":
         user = get_current_user(request)
         if not user:
-            return redirect(reverse('main:portfolio_edit'))
+            if role == "student":
+                return redirect(reverse('main:portfolio_edit'))
+            else:
+                return redirect(reverse('main:employer_profile'))
         image = post_file(request, 'avatar')
         print(image.name)
         try:
             if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
                 upload_error = "Выберите .jpg или .png формат для картинки!" 
+                if role == "student":
+                    return render(request, 'portfolio_edit.html', {
+                        "user": user,
+                        "upload_error": upload_error,
+                    })
+                else:
+                    return render(request, 'employer_profile.html', {
+                        "user": user,
+                        "upload_error": upload_error,
+                    })
+        except:
+            upload_error = "Вы не выбрали картинку для аватара!"
+            if role == "student": 
                 return render(request, 'portfolio_edit.html', {
                     "user": user,
                     "upload_error": upload_error,
                 })
-        except:
-            upload_error = "Вы не выбрали картинку для аватара!" 
-            return render(request, 'portfolio_edit.html', {
+            else:
+                return render(request, 'employer_profile.html', {
                     "user": user,
                     "upload_error": upload_error,
                 })
-        
+
         new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/avatars/avatar'+str(user.id)+'.jpg'
         with open(new_img_url, 'wb') as handler:
             for chunk in image.chunks():
@@ -532,7 +548,10 @@ def update_avatar(request):
         user.img_url = new_img_url
         user.save()
 
-    return redirect(reverse('main:portfolio_edit'))
+    if role == "student":
+        return redirect(reverse('main:portfolio_edit'))
+    else:
+        return redirect(reverse('main:employer_profile'))
 
 
 def update_social(request):
