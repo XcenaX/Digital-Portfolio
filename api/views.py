@@ -27,39 +27,6 @@ def students(request):
         serializer = StudentSerializer(students, many=True, context={'request': request})        
         return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = StudentSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            if len(Student.objects.filter(username=serializer.data["username"])) > 0:
-                return Response({"error": "Такой пользователь уже существует!"})
-            serializer.save()
-            student = Auth_User.objects.create_user(username=serializer.data['username'], password=serializer.data['password'])
-            student.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-#@permission_classes([IsAuthenticated])
-def student_create(request):    
-    serializer = StudentSerializer(data=request.data, context={'request': request})
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-@api_view(['PATCH'])
-#@permission_classes([IsAuthenticated])
-def student_change(request):    
-    serializer = StudentSerializer(data=request.data, context={'request': request})
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
@@ -71,18 +38,7 @@ def student_detail(request, pk):
 
     if request.method == 'GET':
         serializer = StudentSerializer(student, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = StudentSerializer(student, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        student.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)    
+        return Response(serializer.data) 
 
 
 
@@ -98,30 +54,7 @@ def student_detail_name(request, username):
         serializer = StudentSerializer(student, context={'request': request})
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = StudentSerializer(student, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        student.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    elif request.method == "PATCH":
-        data = request.POST
-        if data.get("login"):
-            student.login = data.get("login")
-        if data.get("password"):
-            student.password = data.get("password")
-        if data.get("name"):
-            student.name = data.get("name")
-        if data.get("image"):
-            student.image = data.get("image")
-        student.save()
-        serializer = StudentSerializer(student, context={'request': request})
-        return Response(serializer.data)
+  
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
@@ -193,28 +126,6 @@ def employers(request):
         serializer = EmployerSerializer(employers, many=True, context={'request': request})        
         return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = EmployerSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            if len(Employer.objects.filter(username=serializer.data["username"])) > 0:
-                return Response({"error": "Такой пользователь уже существует!"})
-            serializer.save()
-            student = Auth_User.objects.create_user(username=serializer.data['username'], password=serializer.data['password'])
-            student.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['PATCH'])
-#@permission_classes([IsAuthenticated])
-def employer_change(request):    
-    serializer = EmployerSerializer(data=request.data, context={'request': request})
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
@@ -226,18 +137,7 @@ def employer_detail(request, pk):
 
     if request.method == 'GET':
         serializer = EmployerSerializer(employer, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = EmployerSerializer(employer, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        employer.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)    
+        return Response(serializer.data)  
 
 
 
@@ -253,30 +153,6 @@ def employer_detail_name(request, username):
         serializer = EmployerSerializer(employer, context={'request': request})
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = EmployerSerializer(employer, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        employer.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    elif request.method == "PATCH":
-        data = request.POST
-        if data.get("login"):
-            employer.login = data.get("login")
-        if data.get("password"):
-            employer.password = data.get("password")
-        if data.get("name"):
-            employer.name = data.get("name")
-        if data.get("image"):
-            employer.image = data.get("image")
-        employer.save()
-        serializer = EmployerSerializer(employer, context={'request': request})
-        return Response(serializer.data)
 
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
