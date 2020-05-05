@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Employer, Request, Student, Vacancy, Applied_Vacancy, VacancyView
 from .views import get_current_user, get_current_site, render_to_string, send_email
 from django.http import HttpResponse
-from django.db.models import Sum
+from django.db.models import Sum, Count
 
 def get_student_by_id(id):
     student = Student.objects.filter(id=id).first()
@@ -25,7 +25,7 @@ def get_vacancy_by_id(id):
 def employer_profile(request):
     user = get_current_user(request)
     vacancies = Vacancy.objects.filter(owner=user)
-    count_views = vacancies.objects.aggregate(Sum('views'))
+    count_views = vacancies.objects.aggregate(Count('views'))
     requests = Request.objects.filter(owner=user)
     print("[INFO] User id: " + str(user.id))
 
