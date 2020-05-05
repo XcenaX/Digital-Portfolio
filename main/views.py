@@ -480,7 +480,7 @@ def portfolio_add_achivement(request):
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "static/images/user/achivements/achivement" + str(achivement.id) + ".jpg"
+        new_img_url = "/static/images/user/achivements/achivement" + str(achivement.id) + ".jpg"
         achivement.img_url = new_img_url
         achivement.save()
         user.achivements.add(achivement)
@@ -528,7 +528,7 @@ def update_avatar(request):
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "static/images/user/avatars/avatar" + str(user.id) + ".jpg"
+        new_img_url = "/static/images/user/avatars/avatar" + str(user.id) + ".jpg"
         user.img_url = new_img_url
         user.save()
 
