@@ -53,7 +53,7 @@
                 </div>
 
                 {% if request.session.role == "student"%}
-                    {% if not is_employer_invited%}
+                    {% if not vacancies|length > 0%}
                     <form class="form" action="{% url 'main:apply_vacancy' %}" method="post" >{% csrf_token %}
                         <div class="form-group">          
                             <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
@@ -62,7 +62,7 @@
                             </div>                                                            
                         </div>
                     </form>
-                    {% elif is_employer_invited%}
+                    {% else%}
                          <div class="form-group">          
                             <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
                                 <input hidden type="text" value="{{vacancy.id}}" name="vacancy_id">                            
