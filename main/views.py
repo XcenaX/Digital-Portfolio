@@ -333,7 +333,7 @@ def not_found(request):
 def portfolio_edit(request):
     user = get_current_user(request)
 
-    if not user or not user.is_applied:
+    if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
     if request.session["role"] == "employer":
@@ -389,7 +389,7 @@ def portfolio_edit(request):
 def portfolio_show(request, id):
     employer = get_current_user(request)
     
-    if not employer or not employer.is_applied:
+    if not employer or not employer.is_active:
         return redirect(reverse('main:login'))
     
     if employer:
@@ -422,7 +422,7 @@ def portfolio_show(request, id):
 def achivements_show(request, id):
     employer = get_current_user(request)
 
-    if not employer or not employer.is_applied:
+    if not employer or not employer.is_active:
         return redirect(reverse('main:login'))
 
     if employer:
@@ -454,7 +454,7 @@ def achivements_show(request, id):
 def portfolio_achivements(request):
     user = get_current_user(request)
 
-    if not user or not user.is_applied:
+    if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
     achivements = user.achivements.all()
@@ -470,7 +470,7 @@ def portfolio_achivements(request):
 def portfolio_requests(request):
     user = get_current_user(request)
 
-    if not user or not user.is_applied:
+    if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
     requests = Request.objects.filter(student=user)
