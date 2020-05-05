@@ -19,7 +19,7 @@ import secrets
 
 #  
 
-@api_view(['GET', "POST"])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def students(request):    
     if request.method == 'GET':
@@ -61,7 +61,7 @@ def student_change(request):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def student_detail(request, pk):    
     try:
@@ -86,7 +86,7 @@ def student_detail(request, pk):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def student_detail_name(request, username):        
     try:
@@ -185,7 +185,7 @@ def vacancy_views(request, pk):
         return Response(serializer.data)
 
 
-@api_view(['GET', "POST"])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def employers(request):    
     if request.method == 'GET':
@@ -216,7 +216,7 @@ def employer_change(request):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def employer_detail(request, pk):    
     try:
@@ -241,7 +241,7 @@ def employer_detail(request, pk):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def employer_detail_name(request, username):        
     try:
@@ -278,7 +278,7 @@ def employer_detail_name(request, username):
         serializer = EmployerSerializer(employer, context={'request': request})
         return Response(serializer.data)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def achivement_detail(request, pk):    
     try:
