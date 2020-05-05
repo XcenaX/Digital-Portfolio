@@ -154,6 +154,7 @@ def vacancy_show(request, id):
     vacancy = Vacancy.objects.filter(id=id).first()
     current_user = get_current_user(request)
     role= session_parameter(request, "role")
+    is_request_sended = False
     if role == "student":
         if len(VacancyView.objects.filter(owner=current_user, vacancy=vacancy)) == 0:
             view = VacancyView.objects.create(owner=current_user)
@@ -163,7 +164,7 @@ def vacancy_show(request, id):
             is_request_sended = True
 
     requests = Request.objects.filter(vacancy=vacancy, is_applied=False, is_invitation=False)
-    is_request_sended = False
+    
     
 
     return render(request, 'vacancy_show.html', {
