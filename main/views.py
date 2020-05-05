@@ -443,7 +443,7 @@ def portfolio_add_achivement(request):
     user = get_current_user(request)
 
     if request.method == "POST":
-        description = post_parameter(request, 'descripotion')
+        description = post_parameter(request, 'description')
         image = post_file(request, 'achivement_img')
 
         if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
