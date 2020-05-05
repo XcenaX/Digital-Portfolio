@@ -106,7 +106,7 @@
       </div>
       <!--/col-9-->
     </div>
-    {% if blocks%}
+    {% if blocks and pages|length > 1%}
       <div class="navigation">
           <ul>
               {% for page in pages%}

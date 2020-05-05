@@ -419,11 +419,17 @@ def achivements_show(request, id):
     if employer_request:
         is_request_sended = True
 
+    achivements = user.achivements.all()
+    paginator = Paginator(achivements, COUNT_BLOG_ON_PAGE)
+    paginated_blocks, pages = get_paginated_blogs(request, paginator)
+
     return render(request, 'portfolio_achivements_show.html', {
         "student": user,
         "user": employer,
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
+        "blocks": paginated_blocks,
+        "pages": pages,
     }) 
 
  
@@ -437,6 +443,7 @@ def portfolio_achivements(request):
     return render(request, 'portfolio_achivements.html', {
         "user": user,
         "blocks": paginated_blocks,
+        "pages": pages,
     })   
 
 def portfolio_requests(request):
