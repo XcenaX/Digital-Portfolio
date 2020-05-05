@@ -354,7 +354,7 @@ def portfolio_edit(request):
                 for chunk in image.chunks():
                     handler.write(chunk)
             
-            new_img_url = "images/user/medcards/medcard" + str(user.id) + ".jpg"
+            new_img_url = "/static/images/user/medcards/medcard" + str(user.id) + ".jpg"
             
             user.img_url = new_img_url
         user.fullname = fullname if fullname else user.fullname
@@ -460,7 +460,7 @@ def portfolio_add_achivement(request):
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "images/user/achivements/achivement" + str(achivement.id) + ".jpg"
+        new_img_url = "static/images/user/achivements/achivement" + str(achivement.id) + ".jpg"
         achivement.img_url = new_img_url
         achivement.save()
         return render(request, 'portfolio_add_achivement.html', {
@@ -506,7 +506,7 @@ def update_avatar(request):
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "images/user/avatars/avatar" + str(user.id) + ".jpg"
+        new_img_url = "static/images/user/avatars/avatar" + str(user.id) + ".jpg"
         user.img_url = new_img_url
         user.save()
 
