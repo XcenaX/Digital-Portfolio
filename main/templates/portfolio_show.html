@@ -46,7 +46,7 @@
                         <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
                             <div class="card shadow-sm x-shadow-fade-in">
                                 <div type="text" name="location" class="input100 p-t-10"  id="location"  title="Город проживания">
-                                    <span style="float:left">Город:&emsp; </span> <h3  style="float:left">{{student.city}}</h3 > {%if not student.university.city%} <h3  style="float:left">не указано</h3>{%endif%}
+                                    <span style="float:left">Город:&emsp; </span> <h3  style="float:left">{{student.city}}</h3 > {%if not student.city%} <h3  style="float:left">не указано</h3>{%endif%}
                                 </div>
                                 <span class="focus-input100"></span>
                             </div>                                            
@@ -57,7 +57,7 @@
                         <div class="wrap-input100 validate-input m-b-16 col-xl-12 col-sm-12 p-0">                                           
                             <div class="card shadow-sm x-shadow-fade-in">
                                 <div type="text" name="university" class="input100 p-t-10"  id="university" value="" placeholder="Университет" title="Название университета">
-                                    <span style="float:left">Университет:&emsp; </span> {%if student.university%} <h3  style="float:left">{{student.university.name}}</h3> {%else%} <h3  style="float:left">не указано</h3>{%endif%}
+                                    <span style="float:left">Университет:&emsp; </span> {%if student.university%} <h3  style="float:left">{{student.university}}</h3> {%else%} <h3  style="float:left">не указано</h3>{%endif%}
                                 </div>
                                 <span class="focus-input100"></span>
                             </div>                                            
