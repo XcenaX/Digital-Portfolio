@@ -417,6 +417,10 @@ def portfolio_show(request, id):
 
     employer_request = Request.objects.filter(owner=employer).first()
     vacancies = Vacancy.objects.filter(owner=employer)
+    available_vacancies = []
+    for vacancy in vacancies:
+        if len(Request.objects.filter(student=user, is_invitation=True, owner=employer, vacancy=vacancy)) == 0:
+            available_vacancies.append(vacancy)
     
     is_request_sended = False
     if employer_request:
@@ -427,7 +431,7 @@ def portfolio_show(request, id):
         "user": employer,
         "employer_request": employer_request,
         "is_request_sended": is_request_sended,
-        "vacancies": vacancies,
+        "vacancies": available_vacancies,
         "requests": requests,
         "is_employer_invited": is_employer_invited
     }) 
