@@ -155,7 +155,7 @@ def vacancy_show(request, id):
     current_user = get_current_user(request)
     role= session_parameter(request, "role")
     if role == "student":
-        if len(VacancyView.objects.filter(owner=current_user, is_invitation=False)) == 0:
+        if len(VacancyView.objects.filter(owner=current_user, vacancy=vacancy)) == 0:
             view = VacancyView.objects.create(owner=current_user)
             vacancy.views.add(view)
             vacancy.save()
