@@ -150,7 +150,7 @@ TIME_ZONE = 'UTC'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_ROOT = '/home/AKNYR/nova/static'
+STATIC_ROOT = '/home/digitalportfolio/Digital-Portfolio/main/static'
 STATIC_URL = '/static/'
 
 EMAIL_HOST = "smtp.gmail.com"
