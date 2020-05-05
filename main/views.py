@@ -393,6 +393,7 @@ def portfolio_show(request, id):
 
     employer_request = Request.objects.filter(owner=employer).first()
     vacancies = Vacancy.objects.filter(owner=employer)
+    
     is_request_sended = False
     if employer_request:
         is_request_sended = True
