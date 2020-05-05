@@ -204,12 +204,16 @@
                                             {% else %}
                                                 {%if employer_request.is_applied%}
                                                     <li class="list-group-item text-muted social-li">
-                                                        <a href="{{user.vk}}">
-                                                            <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">
-                                                        </a>
-                                                        <a href="https://t.me/{{user.telegram}}">
-                                                            <img src="{%static 'images/icons/telegram.png'%}" class="social" alt="">
-                                                        </a>
+                                                        {%if student.vk %}
+                                                            <a href="{{student.vk}}">
+                                                                <img src="{%static 'images/icons/vk.png'%}" class="social" alt="">
+                                                            </a>
+                                                        {%endif%}
+                                                        {%if student.telegram %}
+                                                            <a href="https://t.me/{{student.telegram}}">
+                                                                <img src="{%static 'images/icons/telegram.png'%}" class="social" alt="">
+                                                            </a>
+                                                        {%endif%}
                                                     </li>                                                    
                                                 {% elif is_request_sended %}
                                                     <li class="list-group-item text-muted social-li style="height: auto;text-align: center;"">
