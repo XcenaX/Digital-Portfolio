@@ -1,6 +1,9 @@
 
 
 
+.adaptive-width{
+  width: 50% !important;
+}
 
 .error {
   color: red;
@@ -460,6 +463,9 @@ iframe {
   }
   .login-body{
     background-size: cover !important;
+  }
+  .adaptive-width{
+    width: 100% !important;
   }
 }
 
