@@ -58,11 +58,11 @@
                           <h2 class="achive-title">{{block.fullname}}</h2>
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Университет: </h4>
-                            <h4>{%if block.university.name%}{{block.university.name}}{%else%} не указано{%endif%}</h4>
+                            <h4>{%if block.university%}{{block.university}}{%else%} не указано{%endif%}</h4>
                           </div>
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Город: </h4>
-                            <h4>{%if block.university.city%}{{block.university.city}}{%else%} не указано{%endif%}</h4>
+                            <h4>{%if block.city%}{{block.city}}{%else%} не указано{%endif%}</h4>
                           </div>
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Курс: </h4>
@@ -91,6 +91,10 @@
                           <div class="inline-text m-t-10">
                             <h4 class="important-text">Зарплата: </h4>
                             <h4>{{block.salary}}</h4>
+                          </div>
+                          <div class="inline-text m-t-10">
+                            <h4 class="important-text">Описание: </h4>
+                            <h4>{{block.content}}</h4>
                           </div>
                         </div>
                         <a href="{%url 'main:vacancy_show' block.id%}" class="absolute-link"></a>
