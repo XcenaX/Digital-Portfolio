@@ -565,7 +565,7 @@ def update_avatar(request):
             else:
                 return redirect(reverse('main:employer_profile'))
         image = post_file(request, 'avatar')
-        print(image.name)
+        
         try:
             if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
                 upload_error = "Выберите .jpg или .png формат для картинки!" 
