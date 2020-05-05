@@ -407,9 +407,9 @@ def portfolio_show(request, id):
 
     requests = Request.objects.filter(student=user, is_invitation=True)
 
-    is_request_sended = False
-    #if len(Request.objects.filter(student=user, is_invitation=True, owner=employer)) > 0:
-    #   is_request_sended = True
+    is_employer_invited = False
+    if len(Request.objects.filter(student=user, is_invitation=True, owner=employer)) > 0:
+       is_employer_invited = True
 
     if len(user.views.filter(owner=employer)) == 0:
         view = View.objects.create(owner=employer)
@@ -429,7 +429,7 @@ def portfolio_show(request, id):
         "is_request_sended": is_request_sended,
         "vacancies": vacancies,
         "requests": requests,
-        "is_request_sended": is_request_sended
+        "is_employer_invited": is_employer_invited
     }) 
 
 
