@@ -97,7 +97,7 @@
                                     </li>
                                 {% elif request.session.role == "employer" %}
                                     <li class="profile-item">
-                                        <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}">
+                                        <a routerlinkactive="active" href="{%url 'main:employer_profile'%}">
                                         <span class="side-text">Профиль</span>
                                         </a>
                                     </li>
@@ -118,7 +118,7 @@
                                 </li>
                             {% elif request.session.role == "employer" %}
                                 <li class="profile-item">
-                                    <a routerlinkactive="active" href="{%url 'main:portfolio_edit'%}"  class="{%block header_button6%} {% endblock %}">
+                                    <a routerlinkactive="active" href="{%url 'main:employer_profile'%}"  class="{%block header_button6%} {% endblock %}">
                                     <span class="side-text">Профиль</span>
                                     </a>
                                 </li>
