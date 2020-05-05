@@ -89,8 +89,17 @@ def profile_add_vacancy(request):
         if vacancy.save():
             return render(request, 'profile_my_vacancies.html')
 
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=user, is_invitation=False)
+
     return render(request, 'profile_add_vacancy.html',{
-        "user": current_user
+        "user": current_user,
+        "requests": requests,
+        "count_views": count_views,
     })
 
 
@@ -106,11 +115,19 @@ def profile_delete_vacancy(request):
         vacancy.delete()
 
     current_user = get_current_user(request)
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=user, is_invitation=False)
 
     vacancies = get_vacancies_by_employer_id(current_user.id)
     return render(request, 'profile_my_vacancies.html', {
         "vacancies": vacancies,
         "user": current_user,
+        "requests": requests,
+        "count_views": count_views,
     })
 
 
@@ -118,9 +135,19 @@ def profile_my_vacancies(request):
     current_user = get_current_user(request)
     print("[INFO] --------------------- Current user id: " + str(current_user.id) + " -----------------")
     vacancies = get_vacancies_by_employer_id(current_user.id)
+
+    count_views = 0
+    vacancies = Vacancy.objects.filter(owner=user)
+    for vacancy in vacancies:
+        count_views += len(vacancy.views.all())
+    
+    requests = Request.objects.filter(owner=user, is_invitation=False)
+
     return render(request, 'profile_my_vacancies.html', {
         "vacancies": vacancies,
-        "user": current_user
+        "user": current_user,
+        "requests": requests,
+        "count_views": count_views,
     })
 
 
