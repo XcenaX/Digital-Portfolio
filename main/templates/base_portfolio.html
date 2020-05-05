@@ -147,7 +147,7 @@
                                 <a style="color:white;" href="#">Digital University</a>
                                 <ul class="nav navbar-nav ml-auto">
                                     <li class="nav-item m-r-30">
-                                        <img src="{{user.img_url}}" class="nav-image inline-block" alt="">
+                                        <img src="{%static user.img_url %}" class="nav-image inline-block" alt="">
                                         <a class="nav-link inline-block" href="#">{{user.fullname}}</a>
                                     </li>
                                     <li class="nav-item">
@@ -170,12 +170,12 @@
                                 <div class="col-sm-3"><!--left col-->
                                     {% if request.session.role == "employer"%}
                                         <div class="text-center relative">
-                                            <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail" style="width: 100%;border-radius: 50%;" alt="avatar">
+                                            <img src="{%static user.img_url %}" class="avatar img-circle img-thumbnail" style="width: 100%;border-radius: 50%;" alt="avatar">
                                         </div>
                                     {% elif request.session.role == "student"%}
                                         <form action="{%url 'main:update_avatar'%}" style="text-align:center" enctype="multipart/form-data" method="post">{% csrf_token %}
                                             <div class="relative">
-                                                <img src="{{user.img_url}}" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
+                                                <img src="{%static user.img_url %}" class="avatar img-circle img-thumbnail relative" style="width: 100%;border-radius: 50%;" alt="avatar">
                                                 <input type="file" name="avatar" class="absolute-link" style="opacity:0;cursor:pointer;" />    
                                             </div>
                                             <button class="btn btn-lg btn-success col-6" type="submit">Загрузить</button>
