@@ -446,8 +446,15 @@ def portfolio_add_achivement(request):
         description = post_parameter(request, 'description')
         image = post_file(request, 'achivement_img')
 
-        if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
-            upload_error = "Выберите .jpg или .png формат для картинки!" 
+        try:
+            if not image.name.endswith(".png") and not image.name.endswith(".jpg"):
+                upload_error = "Выберите .jpg или .png формат для картинки!" 
+                return render(request, 'portfolio_add_achivement.html', {
+                    "user": user,
+                    "upload_error": upload_error,
+                })
+        except:
+            upload_error = "Вы не выбрали картинку для сертификата!" 
             return render(request, 'portfolio_add_achivement.html', {
                 "user": user,
                 "upload_error": upload_error,
@@ -463,6 +470,8 @@ def portfolio_add_achivement(request):
         new_img_url = "static/images/user/achivements/achivement" + str(achivement.id) + ".jpg"
         achivement.img_url = new_img_url
         achivement.save()
+        user.achivements.add(achivement)
+        user.save()
         return render(request, 'portfolio_add_achivement.html', {
             "user": user,
             "success": "Вы успешно добавили достижение!",
