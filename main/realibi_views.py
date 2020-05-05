@@ -29,7 +29,7 @@ def employer_profile(request):
     for vacancy in vacancies:
         count_views += len(vacancy.views.all())
     
-    requests = Request.objects.filter(owner=user)
+    requests = Request.objects.filter(owner=user, is_invitation=False)
     print("[INFO] User id: " + str(user.id))
 
     return render(request, 'employer_profile.html', {
