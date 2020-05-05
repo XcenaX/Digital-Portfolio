@@ -356,7 +356,7 @@ def portfolio_edit(request):
             
             new_img_url = "/static/images/user/medcards/medcard" + str(user.id) + ".jpg"
             
-            user.img_url = new_img_url
+            user.medcard_url = new_img_url
         user.fullname = fullname if fullname else user.fullname
         user.university_course = course if course else user.university_course
         user.date_of_birth = date_of_birth if date_of_birth else user.date_of_birth
