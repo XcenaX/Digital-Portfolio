@@ -83,18 +83,17 @@ def profile_add_vacancy(request):
         title = request.POST['title']
         content = request.POST['content']
         salary = request.POST['salary']
-        user = get_current_user(request)
 
-        vacancy = Vacancy.objects.create(title=title, content=content, salary=salary, owner=user)
+        vacancy = Vacancy.objects.create(title=title, content=content, salary=salary, owner=current_user)
         if vacancy.save():
             return render(request, 'profile_my_vacancies.html')
 
     count_views = 0
-    vacancies = Vacancy.objects.filter(owner=user)
+    vacancies = Vacancy.objects.filter(owner=current_user)
     for vacancy in vacancies:
         count_views += len(vacancy.views.all())
     
-    requests = Request.objects.filter(owner=user, is_invitation=False)
+    requests = Request.objects.filter(owner=current_user, is_invitation=False)
 
     return render(request, 'profile_add_vacancy.html',{
         "user": current_user,
@@ -116,11 +115,11 @@ def profile_delete_vacancy(request):
 
     current_user = get_current_user(request)
     count_views = 0
-    vacancies = Vacancy.objects.filter(owner=user)
+    vacancies = Vacancy.objects.filter(owner=current_user)
     for vacancy in vacancies:
         count_views += len(vacancy.views.all())
     
-    requests = Request.objects.filter(owner=user, is_invitation=False)
+    requests = Request.objects.filter(owner=current_user, is_invitation=False)
 
     vacancies = get_vacancies_by_employer_id(current_user.id)
     return render(request, 'profile_my_vacancies.html', {
@@ -137,11 +136,11 @@ def profile_my_vacancies(request):
     vacancies = get_vacancies_by_employer_id(current_user.id)
 
     count_views = 0
-    vacancies = Vacancy.objects.filter(owner=user)
+    vacancies = Vacancy.objects.filter(owner=current_user)
     for vacancy in vacancies:
         count_views += len(vacancy.views.all())
     
-    requests = Request.objects.filter(owner=user, is_invitation=False)
+    requests = Request.objects.filter(owner=current_user, is_invitation=False)
 
     return render(request, 'profile_my_vacancies.html', {
         "vacancies": vacancies,
