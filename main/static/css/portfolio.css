@@ -3,6 +3,10 @@
   position: relative
 }
 
+.adaptive-width{
+  width: 50% !important;
+}
+
 .preview .myoverlay {
   width: 100%;
   height: 100%;
@@ -736,6 +740,9 @@ h1.title {
   }
   .login100-form-title{
     font-size: 20px;
+  }
+  .adaptive-width{
+    width: 100% !important;
   }
 }
 
