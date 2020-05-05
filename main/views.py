@@ -406,7 +406,7 @@ def portfolio_show(request, id):
     requests = Request.objects.filter(student=user, is_invitation=True)
 
     is_request_sended = False
-    if len(Request.objects.filter(student=user, is_invitation=True, owner=employer)) > 0:
+    if len(Request.objects.filter(student=user, is_invitation=False, owner=employer)) > 0:
         is_request_sended = True
 
     if len(user.views.filter(owner=employer)) == 0:
