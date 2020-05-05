@@ -473,7 +473,7 @@ def portfolio_requests(request):
     if not user or not user.is_active:
         return redirect(reverse('main:login'))
 
-    requests = Request.objects.filter(student=user)
+    requests = Request.objects.filter(student=user, is_invitation=True)
     paginator = Paginator(requests, COUNT_BLOG_ON_PAGE)
     paginated_blocks, pages = get_paginated_blogs(request, paginator)
 

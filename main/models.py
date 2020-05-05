@@ -18,6 +18,7 @@ class Employer(models.Model): # работодатель
     date_of_register = models.DateField(auto_now=True) 
     is_active = models.BooleanField(default=False)
     description = models.TextField(default="")
+    company = models.TextField(default="")
     vk = models.TextField(default="")
     telegram = models.TextField(default="")
     def __str__(self):
