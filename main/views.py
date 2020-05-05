@@ -429,7 +429,7 @@ def achivements_show(request, id):
 
 def portfolio_achivements(request):
     user = get_current_user(request)
-    achivements = user.achivements
+    achivements = user.achivements.all()
     paginator = Paginator(achivements, COUNT_BLOG_ON_PAGE)
     paginated_blocks, pages = get_paginated_blogs(request, paginator)
 
