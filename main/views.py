@@ -42,13 +42,13 @@ def get_paginated_blogs(request, paginator):
     except:
         page = 1
     a = ""
-    blog = ""
+    block = ""
     pages=[]
     if page:
         try:
-            blog = paginator.page(page)
+            block = paginator.page(page)
         except EmptyPage:
-            blog = paginator.page(paginator.num_pages)
+            block = paginator.page(paginator.num_pages)
             page = paginator.num_pages
 
         for i in range(page-2, page+3):
@@ -65,8 +65,8 @@ def get_paginated_blogs(request, paginator):
             pages.insert(0, 1)
     else:
         pages = [1,2,3,4,5,paginator.num_pages]
-        blog = paginator.page(1)
-    return blog, pages
+        block = paginator.page(1)
+    return block, pages
 
 
 def get_current_user(req):
@@ -349,7 +349,7 @@ def portfolio_edit(request):
             is_image = False
 
         if is_image:
-            new_img_url = '/home/HACKDAY/portfolio/static/images/user/medcards/medcard'+str(user.id)+'.jpg'
+            new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/medcards/medcard'+str(user.id)+'.jpg'
             with open(new_img_url, 'wb') as handler:
                 for chunk in image.chunks():
                     handler.write(chunk)
@@ -455,12 +455,12 @@ def portfolio_add_achivement(request):
 
         achivement = Achivement.objects.create(description=description)
 
-        new_img_url = '/home/HACKDAY/portfolio/static/images/user/achivements/achivement'+str(achivement.id)+'.jpg'
+        new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/achivements/achivement'+str(achivement.id)+'.jpg'
         with open(new_img_url, 'wb') as handler:
             for chunk in image.chunks():
                 handler.write(chunk)
         
-        new_img_url = "images/user/achivements/achivement" + str(blog.id) + ".jpg"
+        new_img_url = "images/user/achivements/achivement" + str(achivement.id) + ".jpg"
         achivement.img_url = new_img_url
         achivement.save()
         return render(request, 'portfolio_add_achivement.html', {
@@ -501,7 +501,7 @@ def update_avatar(request):
                     "upload_error": upload_error,
                 })
         
-        new_img_url = '/home/HACKDAY/portfolio/static/images/user/avatars/avatar'+str(user.id)+'.jpg'
+        new_img_url = '/home/digitalportfolio/Digital-Portfolio/main/static/images/user/avatars/avatar'+str(user.id)+'.jpg'
         with open(new_img_url, 'wb') as handler:
             for chunk in image.chunks():
                 handler.write(chunk)

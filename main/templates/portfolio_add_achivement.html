@@ -30,7 +30,7 @@
    <div class="tab-content">
         <div class=" active" id="add-achive">
             
-            <form class="form" action="##" method="post" >
+            <form class="form" action="{% url 'main:portfolio_add_achivement'%}" method="post" > {% csrf_token %}
                 <h1 class="title">Добавить достижение</h1>
                 <div class="col-xl-6 col-sm-12">
                     <div class="form-group">

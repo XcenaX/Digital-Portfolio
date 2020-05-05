@@ -62,7 +62,7 @@ def student_change(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def student_detail(request, pk):    
     try:
         student = Student.objects.get(pk=pk)
@@ -87,7 +87,7 @@ def student_detail(request, pk):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def student_detail_name(request, username):        
     try:
         student = Student.objects.filter(username=username).first()
@@ -124,7 +124,7 @@ def student_detail_name(request, username):
         return Response(serializer.data)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def student_achivements(request, pk):    
     if request.method == 'GET':
         student = Student.objects.filter(id=pk).first()
@@ -133,7 +133,7 @@ def student_achivements(request, pk):
         return Response(serializer.data)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def achivements(request):    
     if request.method == 'GET':
         achivements = Achivement.objects.all()
@@ -141,7 +141,7 @@ def achivements(request):
         return Response(serializer.data)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def student_views(request, pk):    
     if request.method == 'GET':
         student = Student.objects.filter(id=pk).first()
@@ -150,7 +150,7 @@ def student_views(request, pk):
         return Response(serializer.data)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def employer_vacancies(request, pk):    
     if request.method == 'GET':
         employer = Employer.objects.filter(id=pk).first()
@@ -159,7 +159,7 @@ def employer_vacancies(request, pk):
         return Response(serializer.data)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def vacancies(request):    
     if request.method == 'GET':
         vacancies = Vacancy.objects.all()
@@ -167,7 +167,7 @@ def vacancies(request):
         return Response(serializer.data)
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def vacancy_id(request, pk):    
     if request.method == 'GET':
         vacancy = Vacancy.objects.filter(id=pk).first()
@@ -176,7 +176,7 @@ def vacancy_id(request, pk):
 
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def vacancy_views(request, pk):    
     if request.method == 'GET':
         vacancy = Vacancy.objects.filter(id=pk).first()
@@ -186,7 +186,7 @@ def vacancy_views(request, pk):
 
 
 @api_view(['GET', "POST"])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def employers(request):    
     if request.method == 'GET':
         employers = Employer.objects.all()
@@ -206,7 +206,7 @@ def employers(request):
 
 
 @api_view(['PATCH'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def employer_change(request):    
     serializer = EmployerSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
@@ -217,7 +217,7 @@ def employer_change(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def employer_detail(request, pk):    
     try:
         employer = Employer.objects.get(pk=pk)
@@ -242,7 +242,7 @@ def employer_detail(request, pk):
 
 
 @api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def employer_detail_name(request, username):        
     try:
         employer = Employer.objects.filter(username=username).first()
@@ -279,7 +279,7 @@ def employer_detail_name(request, username):
         return Response(serializer.data)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def achivement_detail(request, pk):    
     try:
         achivement = Achivement.objects.get(pk=pk)
