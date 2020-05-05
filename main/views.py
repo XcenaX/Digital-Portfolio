@@ -474,9 +474,14 @@ def portfolio_requests(request):
         return redirect(reverse('main:login'))
 
     requests = Request.objects.filter(student=user)
+    paginator = Paginator(requests, COUNT_BLOG_ON_PAGE)
+    paginated_blocks, pages = get_paginated_blogs(request, paginator)
+
 
     return render(request, 'portfolio_requests.html', {
         "user": user,
+        "blocks":  paginated_blocks,
+        "pages": pages,
     })   
 
 def portfolio_add_achivement(request):

@@ -54,6 +54,24 @@
             <h2 class="important-text" style="margin:30px auto;text-align:center;">У вас нет предложений работы!</h2>
         {%endif%}
     </div>
+
+    {% if blocks and pages|length > 1%}
+      <div class="navigation">
+          <ul>
+              {% for page in pages%}
+                  {% if page == blocks.number %}
+                      <li class="page-current">
+                          <span>{{page}}</span>
+                      </li>
+                  {% else %}
+                      <li class="page-nav">
+                          <a href="?page={{page}}"> {{page}} </a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+          </ul>
+      </div>
+    {%endif%}
 {% endblock%}
 
  
