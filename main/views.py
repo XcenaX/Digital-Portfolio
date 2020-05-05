@@ -214,11 +214,15 @@ def register(request):
             if role == "student":
                 students = Student.objects.filter(email=email)
                 if len(students) > 0:
-                    raise Exception
+                    students = Student.objects.filter(username=username)
+                    if len(students) > 0:
+                        raise Exception
             elif role == "employer":
-                employers = Employer.objects.filter(username=username)
+                employers = Employer.objects.filter(email=email)
                 if len(employers) > 0:
-                    raise Exception
+                    employers = Employer.objects.filter(username=username)
+                    if len(employers) > 0:
+                        raise Exception
         except:
            user = False
         
@@ -449,6 +453,12 @@ def portfolio_achivements(request):
 
 def portfolio_requests(request):
     user = get_current_user(request)
+
+    if not user or not user.is_applied:
+
+
+    requests = Request.objects.filter(student=user)
+
     return render(request, 'portfolio_requests.html', {
         "user": user,
     })   
