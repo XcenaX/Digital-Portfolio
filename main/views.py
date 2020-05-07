@@ -562,6 +562,8 @@ def delete_achivement(request):
         achivement_id = post_parameter(request, "id")
         if achivement_id:
             Achivement.objects.get(id=achivement_id).delete()
+            img_url = "/home/digitalportfolio/Digital-Portfolio/main/static/images/user/achivements/achivement"+str(achivement_id)+".jpg"
+            os.remove(img_url)
     return redirect(reverse('main:portfolio_achivements'))
 
 def update_avatar(request):
