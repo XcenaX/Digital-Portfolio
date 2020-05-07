@@ -22,7 +22,7 @@ class AchivementSerializer(serializers.HyperlinkedModelSerializer):
 
 class VacancySerializer(serializers.HyperlinkedModelSerializer):    
     owner = serializers.HyperlinkedRelatedField(many=False, view_name='employer-id', read_only=True)
-    views = serializers.HyperlinkedRelatedField(many=True, view_name='view-id', read_only=True)
+    views = serializers.HyperlinkedRelatedField(many=True, view_name='vacancyview-id', read_only=True)
 
     class Meta:
         model = Vacancy
