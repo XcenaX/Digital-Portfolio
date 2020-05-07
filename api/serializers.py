@@ -29,13 +29,13 @@ class VacancySerializer(serializers.HyperlinkedModelSerializer):
         fields = ["id", "title", "content", "pub_date", "salary", "is_active", "owner", "views"]
 
 class ViewSerializer(serializers.HyperlinkedModelSerializer):    
-    owner = serializers.HyperlinkedRelatedField(many=False, view_name='student-id', read_only=True)
+    owner = serializers.HyperlinkedRelatedField(many=False, view_name='employer-id', read_only=True)
     class Meta:
         model = View
         fields = ["id", "owner"]
 
 class VacancyViewSerializer(serializers.HyperlinkedModelSerializer):    
-    owner = serializers.HyperlinkedRelatedField(many=False, view_name='employer-id', read_only=True)
+    owner = serializers.HyperlinkedRelatedField(many=False, view_name='student-id', read_only=True)
     class Meta:
         model = VacancyView
         fields = ["id", "owner"]
