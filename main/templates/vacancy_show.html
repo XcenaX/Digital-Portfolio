@@ -54,22 +54,28 @@
 
                 {% if request.session.role == "student"%}
                     {% if employer_request%}
-                        <form class="form" action="{% url 'main:apply_employer_request' %}" method="post" >{% csrf_token %}
-                            <div class="form-group">          
-                                <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
-                                    <input hidden type="text" value="{{vacancy.id}}" name="id">                            
-                                    <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Принять</button>    
-                                </div>                                                            
-                            </div>
-                        </form>
-                        <form class="form" action="{% url 'main:cancel_employer_request' %}" method="post" >{% csrf_token %}
-                            <div class="form-group">          
-                                <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
-                                    <input hidden type="text" value="{{vacancy.id}}" name="id">                            
-                                    <button id="sendRequestBtn" class="btn btn-lg btn-danger col-12 m-b-20" type="submit">Отклонить</button>    
-                                </div>                                                            
-                            </div>
-                        </form>
+                        {% if employer_request.is_applied %}
+                            <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">                           
+                                <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" disabled>Вы уже приняли приглашение</button>    
+                            </div> 
+                        {% else %}
+                            <form class="form" action="{% url 'main:apply_employer_request' %}" method="post" >{% csrf_token %}
+                                <div class="form-group">          
+                                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
+                                        <input hidden type="text" value="{{vacancy.id}}" name="id">                            
+                                        <button id="sendRequestBtn" class="btn btn-lg btn-success col-12 m-b-20" type="submit">Принять</button>    
+                                    </div>                                                            
+                                </div>
+                            </form>
+                            <form class="form" action="{% url 'main:cancel_employer_request' %}" method="post" >{% csrf_token %}
+                                <div class="form-group">          
+                                    <div class="wrap-input100 validate-input m-b-16 col-xl-3 col-sm-12 p-0">
+                                        <input hidden type="text" value="{{vacancy.id}}" name="id">                            
+                                        <button id="sendRequestBtn" class="btn btn-lg btn-danger col-12 m-b-20" type="submit">Отклонить</button>    
+                                    </div>                                                            
+                                </div>
+                            </form>
+                        {%endif%}
                     {% elif not is_request_sended%}
                         <form class="form" action="{% url 'main:apply_vacancy' %}" method="post" >{% csrf_token %}
                             <div class="form-group">          

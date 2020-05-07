@@ -1,6 +1,7 @@
 {% autoescape off %}
 Привет {{ user.fullname }},
 Студент {{student.fullname}} принял приглашение на вашу вакансию {{vacancy.title}} на сайте {{domain}}
+
 Вот контакты студента для связи с ним:
 {% if student.vk%}
     ВК: {{student.vk}}
@@ -8,4 +9,5 @@
 {% if student.telegram%}
     Telegram: https://t.me/{{student.telegram}}
 {%endif%}
+Порфтолио студента: https://{{domain}}/portfolio/{{student.id}}
 {% endautoescape %}
