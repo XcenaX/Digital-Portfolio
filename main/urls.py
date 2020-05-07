@@ -30,6 +30,9 @@ urlpatterns = [
     path('profile_delete_vacancy', realibi_views.profile_delete_vacancy, name="delete_vacancy"),
     path('accept_student', realibi_views.accept_student, name="accept_student"),
     path('decline_student', realibi_views.decline_student, name="decline_student"),
+    path('apply_employer_request', views.apply_employer_request, name="apply_employer_request"),
+    path('cancel_employer_request', views.cancel_employer_request, name="cancel_employer_request"),
+    
     
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='activate'),    
 ]

@@ -162,6 +162,7 @@ def vacancy_show(request, id):
             vacancy.save()
         if len(Request.objects.filter(vacancy=vacancy, student=current_user, is_invitation=False)) > 0:
             is_request_sended = True
+        employer_request = Request.objects.filter(is_invitation=True, vacancy=vacancy, student=current_user, owner=vacancy.owner).first()
 
     requests = Request.objects.filter(vacancy=vacancy, is_applied=False, is_invitation=False)
     
@@ -171,7 +172,8 @@ def vacancy_show(request, id):
         'vacancy': vacancy,
         'requests': requests,
         "user": current_user,
-        "is_request_sended": is_request_sended
+        "is_request_sended": is_request_sended,
+        "employer_request": employer_request,
     }) 
 
 

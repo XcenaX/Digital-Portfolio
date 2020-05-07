@@ -632,6 +632,54 @@ def update_social(request):
     else:
         return redirect(reverse('main:employer_profile'))
 
+
+def apply_employer_request(request):
+    if request.method == "POST":
+        request_id = post_parameter(request, "id")
+        employer_request = Request.objects.filter(id=request_id).first()
+        if employer_request:
+            employer = employer_request.owner
+            student = employer_request.student
+
+            current_site = get_current_site(request)
+            mail_subject = 'Студент приянл приглашение!'
+            message = render_to_string('student_apply_request.html', {
+                'user': employer,
+                'domain': current_site.domain,
+                "vacancy": employer_request.vacancy
+                "student": student
+                "mail_subject": mail_subject,
+            })
+            to_email = employer.email
+            
+            send_email(message, mail_subject, to_email)
+            employer_request.is_applied = True
+            employer_request.save()
+    return redirect(request.path)
+
+def cancel_employer_request(request):
+    if request.method == "POST":
+        request_id = post_parameter(request, "id")
+        employer_request = Request.objects.filter(id=request_id).first()
+        if employer_request:
+            employer = employer_request.owner
+            student = employer_request.student
+
+            current_site = get_current_site(request)
+            mail_subject = 'Студент отклонил приглашение!'
+            message = render_to_string('student_apply_request.html', {
+                'user': employer,
+                'domain': current_site.domain,
+                "vacancy": employer_request.vacancy
+                "student": student
+                "mail_subject": mail_subject,
+            })
+            to_email = employer.email
+            
+            send_email(message, mail_subject, to_email)
+            employer_request.delete()
+    return redirect(request.path)
+
 def switch_search(request):
     if request.method == "POST":
         user = get_current_user(request)
