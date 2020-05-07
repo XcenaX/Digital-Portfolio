@@ -127,6 +127,7 @@ def filter_users(request):
             blocks = Vacancy.objects.all()
         if q:
             blocks = blocks.filter(Q(content__icontains=q) | Q(title__icontains=q) | Q(salary__icontains=q))
+        blocks = blocks.filter(is_searching_work=True)
     #                                                                               это для того чтобы искать с условиями, типо содердится ли q там, там или там
     else:
         if category == "old":
