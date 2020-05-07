@@ -141,6 +141,8 @@ def filter_users(request):
             blocks = Student.objects.filter(is_searching_work=True)
         if q:
             blocks = blocks.filter(Q(fullname__icontains=q) | Q(university__icontains=q) | Q(university_course__icontains=q) | Q(city__icontains=q))
+
+    blocks = blocks.filter(is_active=True)
     return blocks
 
 def logout(request):
