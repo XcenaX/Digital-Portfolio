@@ -646,8 +646,8 @@ def apply_employer_request(request):
             message = render_to_string('student_apply_request.html', {
                 'user': employer,
                 'domain': current_site.domain,
-                "vacancy": employer_request.vacancy
-                "student": student
+                "vacancy": employer_request.vacancy,
+                "student": student,
                 "mail_subject": mail_subject,
             })
             to_email = employer.email
@@ -670,8 +670,8 @@ def cancel_employer_request(request):
             message = render_to_string('student_apply_request.html', {
                 'user': employer,
                 'domain': current_site.domain,
-                "vacancy": employer_request.vacancy
-                "student": student
+                "vacancy": employer_request.vacancy,
+                "student": student,
                 "mail_subject": mail_subject,
             })
             to_email = employer.email
