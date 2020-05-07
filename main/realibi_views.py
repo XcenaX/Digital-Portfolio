@@ -155,6 +155,7 @@ def vacancy_show(request, id):
     current_user = get_current_user(request)
     role= session_parameter(request, "role")
     is_request_sended = False
+    employer_request = None
     if role == "student":
         if len(VacancyView.objects.filter(owner=current_user, vacancy=vacancy)) == 0:
             view = VacancyView.objects.create(owner=current_user)
@@ -194,6 +195,8 @@ def apply_vacancy(request):
 
         vacancy_request.save()
         return render(request, 'message.html', {'text': 'Вы откликнулись на вакансию ' + vacancy.title + '! Ожидайте ответа от работодателя!'})
+
+
 
 
 def accept_student(request):
