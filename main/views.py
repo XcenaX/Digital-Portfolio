@@ -655,7 +655,7 @@ def apply_employer_request(request):
             send_email(message, mail_subject, to_email)
             employer_request.is_applied = True
             employer_request.save()
-    return redirect(request.path)
+    return redirect(reverse("main:portfolio_edit"))
 
 def cancel_employer_request(request):
     if request.method == "POST":
@@ -678,7 +678,7 @@ def cancel_employer_request(request):
             
             send_email(message, mail_subject, to_email)
             employer_request.delete()
-    return redirect(request.path)
+    return redirect(reverse("main:portfolio_edit"))
 
 def switch_search(request):
     if request.method == "POST":
