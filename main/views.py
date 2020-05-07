@@ -635,50 +635,56 @@ def update_social(request):
 
 def apply_employer_request(request):
     if request.method == "POST":
-        request_id = post_parameter(request, "id")
-        employer_request = Request.objects.filter(id=request_id).first()
-        if employer_request:
-            employer = employer_request.owner
-            student = employer_request.student
+        current_user = get_current_user(request)
+        vacancy_id = post_parameter(request, "id")
+        employer_vacancy = Vacancy.objects.filter(id=vacancy_id).first()
+        if employer_vacancy:
+            employer = employer_vacancy.owner
+            student = current_user
 
             current_site = get_current_site(request)
-            mail_subject = 'Студент приянл приглашение!'
+            mail_subject = 'Студент принял приглашение!'
             message = render_to_string('student_apply_request.html', {
                 'user': employer,
                 'domain': current_site.domain,
-                "vacancy": employer_request.vacancy,
+                "vacancy": employer_vacancy,
                 "student": student,
                 "mail_subject": mail_subject,
             })
             to_email = employer.email
             
             send_email(message, mail_subject, to_email)
+            employer_request = Request.objects.filter(vacancy=employer_vacancy, owner=employer, student=student, is_invitation=True).first()
             employer_request.is_applied = True
             employer_request.save()
     return redirect(reverse("main:portfolio_edit"))
 
 def cancel_employer_request(request):
     if request.method == "POST":
-        request_id = post_parameter(request, "id")
-        employer_request = Request.objects.filter(id=request_id).first()
-        if employer_request:
-            employer = employer_request.owner
-            student = employer_request.student
+        current_user = get_current_user(request)
+        vacancy_id = post_parameter(request, "id")
+        employer_vacancy = Vacancy.objects.filter(id=vacancy_id).first()
+        if employer_vacancy:
+            employer = employer_vacancy.owner
+            student = current_user
 
             current_site = get_current_site(request)
             mail_subject = 'Студент отклонил приглашение!'
-            message = render_to_string('student_apply_request.html', {
+            message = render_to_string('student_cancel_request.html', {
                 'user': employer,
                 'domain': current_site.domain,
-                "vacancy": employer_request.vacancy,
+                "vacancy": employer_vacancy,
                 "student": student,
                 "mail_subject": mail_subject,
             })
             to_email = employer.email
             
             send_email(message, mail_subject, to_email)
+            
+            employer_request = Request.objects.filter(vacancy=employer_vacancy, owner=employer, student=student, is_invitation=True).first()
             employer_request.delete()
     return redirect(reverse("main:portfolio_edit"))
+    
 
 def switch_search(request):
     if request.method == "POST":
