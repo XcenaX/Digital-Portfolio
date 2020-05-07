@@ -418,7 +418,7 @@ def portfolio_show(request, id):
         view = View.objects.create(owner=employer)
         user.views.add(view)
 
-    employer_request = Request.objects.filter(owner=employer).first()
+    employer_request = Request.objects.filter(owner=employer, student=user, is_invitation=True).first()
     vacancies = Vacancy.objects.filter(owner=employer)
     available_vacancies = []
     for vacancy in vacancies:
